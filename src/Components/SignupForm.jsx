@@ -21,10 +21,6 @@ function SignupForm() {
 
   const onSubmit = async () => {
 
-    console.log(values,'valueeeeees')
-    console.log(values.profile_poto,'profile')
-    console.log(values.certificate,'certificaaaaaaaaaaaaate')
-
     const form = new FormData()
     form.append('phone',values.phone)
     form.append('email',values.email)
@@ -39,56 +35,44 @@ function SignupForm() {
     } 
     
    
-    form.forEach((value, key) => {
-      console.log(value,key)
-    });
+    // form.forEach((value, key) => {
+    //   console.log(value,key)
+    // });
 
    
     try {
       if (RegisterPerson === 'expert') {
         
         const response = await Register(form)
-        console.log(response,'helllllllooooo')
         if (response.status === 200) {
           toast.success('success you can login')
            navigate('/login')
         } else if (response.error?.email && response.error.email[0]==="user with this email address already exists.") {
-          toast.error('This Email is Already Registered')
-           
+          toast.error('This Email is Already Registered')  
         } else if (response.error?.phone && response.error.phone[0]==="user with this phone already exists."){
           toast.error('This Mobile is Already Registered')
-
         }  else {
           toast.error('Something went wrong!')
         }
         
-        
-
-
-
       } else {
         
         const response = await Register(form)
-        console.log(response)
         if (response.status === 200) {
           toast.success('success you can login')
            navigate('/login')
         } else if (response.error?.email && response.error.email[0]==="user with this email address already exists.") {
-          toast.error('This Email is Already Registered')
-           
+          toast.error('This Email is Already Registered')     
         } else if (response.error?.phone && response.error.phone[0]==="user with this phone already exists."){
           toast.error('This Mobile is Already Registered')
-
         }  else {
           toast.error('Something went wrong!')
         }
-
 
       }
 
     } catch (error) {
       console.log(error)
-
     }
   }
 
@@ -218,8 +202,8 @@ function SignupForm() {
 
               <div className='mt-5 md:mt-0'>
 
-                <input name="img" required 
-                  id="img" accept='image/*'  onChange={(evt)=>setFieldValue('profile_poto',evt.target.files[0])} className="block  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" type="file" />
+                <input name="profile_poto" required 
+                  id="profile_poto" accept='profile_poto/*'  onChange={(evt)=>setFieldValue('profile_poto',evt.target.files[0])} className="block  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" type="file" />
 
               </div>
               <div className='mt-5 md:mt-0'>

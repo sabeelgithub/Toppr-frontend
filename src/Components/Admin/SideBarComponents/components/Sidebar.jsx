@@ -26,6 +26,7 @@ const Sidebar = () => {
             src: <IoIosNotifications />,
         },
         { title: "Experts",  path:"/admin/experts", src: <HiUsers /> },
+        { title: "Domains", path: "/admin/domains", src: <BsBorderWidth /> },
        
         
         {

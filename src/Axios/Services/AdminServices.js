@@ -105,7 +105,7 @@ export const getSinglePendingExpert = async(id)=>{
 }
 
 
-// add expert an reject expert
+// add expert and reject expert
 export const handleAddExpertAndRejectExpert = async(id,data)=>{
     try{
         const config = {
@@ -117,6 +117,66 @@ export const handleAddExpertAndRejectExpert = async(id,data)=>{
         return response.data
 
     } 
+    catch (error){
+        console.log(error)
+    }
+}
+
+// get domain list
+export const getDomains = async()=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const mun = {
+            mun:'pottan'
+        }
+        const response = await axiosAdminInstance.get('domains/',config)
+        return response.data
+
+
+    }
+    catch (error) {
+        console.log(error)
+
+    }
+}
+
+// delete Domain
+export const DeleteDomains = async(id)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const data = {
+            id:id
+        }
+        const response = await axiosAdminInstance.delete('domains/',{data},config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error)
+
+    }
+}
+
+//add domain
+export const AddDomain = async (data)=>{
+    try{
+        const config = {
+            headers:{
+              "Content-type":"multipart/formdata",
+            }
+        }
+        const response = await axiosAdminInstance.post('domains/',data,config)
+        return response.data
+
+    }
     catch (error){
         console.log(error)
     }
