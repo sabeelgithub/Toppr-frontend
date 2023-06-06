@@ -58,10 +58,13 @@ export default function Header() {
         <Link to="" className="text-sm font-semibold leading-6 text-white ">Domains</Link>
         <Link to="" className="text-sm font-semibold leading-6 text-white ">Experts</Link>
         <Link to="" className="text-sm font-semibold leading-6 text-white ">About</Link>
+        
       
         
         </Popover.Group>
+        
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+        <p className='text-white mx-32 mt-2'>hi</p>
           <Link  to="/login" className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
             Log in 
           </Link>
@@ -96,6 +99,7 @@ export default function Header() {
                 <Link to="" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Domains</Link>
                 <Link to="" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Experts</Link>
                 <Link to="" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">About</Link>
+                <p className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'>hi</p>
                
               
               </div>

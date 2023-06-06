@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 
 function LoginForm() {
 
-  // navigate = useNavigate()
+  const navigate = useNavigate()
 
 
   const onSubmit = async ()=>{
@@ -20,9 +20,18 @@ function LoginForm() {
       const response = await Login(values)
       console.log(response)
       if (response.status===200){
-        toast.success('you  are successfully logged')
-        
+        toast.success(response.message) 
+        if (response.person==='client'){
+          navigate('/')
+
+        } else if(response.person==='admin'){
+          navigate('/admin/dashboard')
+
+        }
+
       } else if (response.status === 600){
+        toast.warning(response.message)
+      } else if (response.status === 500){
         toast.warning(response.message)
       } else if (response.status === 700){
         toast.error(response.message)
@@ -54,7 +63,7 @@ function LoginForm() {
   })
   return (
     <div>
-    <section className="bg-black dark:bg-gray-900 py-10">
+    <section className="bg-black dark:bg-gray-900 py-14">
   <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-full lg:py-0">
    
     <div className="w-full bg-stone-900 shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 loginform">
