@@ -27,6 +27,8 @@ const Sidebar = () => {
         },
         { title: "Experts",  path:"/admin/experts", src: <HiUsers /> },
         { title: "Domains", path: "/admin/domains", src: <BsBorderWidth /> },
+        { title: "Tutorial", path: "/admin/tutorials", src: <BsBorderWidth /> },
+        { title: "Sub-Tutorial", path: "/admin/sub-tutorials", src: <BsBorderWidth /> },
        
         
         {

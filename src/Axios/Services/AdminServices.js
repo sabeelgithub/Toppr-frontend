@@ -130,9 +130,7 @@ export const getDomains = async()=>{
                 "Content-type":"application/json"
             }
         }
-        const mun = {
-            mun:'pottan'
-        }
+        
         const response = await axiosAdminInstance.get('domains/',config)
         return response.data
 
@@ -179,5 +177,169 @@ export const AddDomain = async (data)=>{
     }
     catch (error){
         console.log(error)
+    }
+}
+
+export const editDomains = async (data)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"multipart/formdata",
+            }
+        }
+        const response = await axiosAdminInstance.patch('domains/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error)
+    }
+   
+}
+
+// get tutorials
+
+export const getTutorial = async()=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const response = await axiosAdminInstance.get('tutorials/',config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error)
+    }
+
+}
+
+// delete tutorial
+export const DeleteTutorials = async(id)=>{
+
+    try{
+ 
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+     
+        const data = {
+            id:id,
+        }
+        const response = await axiosAdminInstance.delete('tutorials/',{data},config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message,'message')
+        
+    }
+
+}
+
+export const AddTutorial = async (data)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        
+        const response = await axiosAdminInstance.post('tutorials/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
+
+// edit tutorial
+export const EditTutorial = async (data)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const response = await axiosAdminInstance.patch('tutorials/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+
+    }
+}
+
+// get sub-tutorials
+export const getSubTutorials = async()=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const response = await axiosAdminInstance.get('sub-tutorials/',config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+
+}
+
+// delete sub-tutorial
+export const DeleteSubTutorial = async(data)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const response = await axiosAdminInstance.delete('sub-tutorials/',{data},config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
+
+// add sub-tutorial
+export const AddSubTutorial = async (data)=>{
+    try{
+        const config = {
+            headers:{
+
+            }
+        }
+        const response = await axiosAdminInstance.post('sub-tutorials/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error)
+    }
+}
+
+export const EditSubTutorial = async (data)=>{
+    try {
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const response = await axiosAdminInstance.patch('sub-tutorials/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
     }
 }

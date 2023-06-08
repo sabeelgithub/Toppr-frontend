@@ -6,6 +6,6 @@ export const AddDomainSchema = yup.object().shape({
     price:yup.number('should be number')
     .positive()
     .integer()
-    .required('phone number required'),
+    .required('Price number required'),
 
 })

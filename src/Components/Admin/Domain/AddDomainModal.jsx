@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useFormik } from "formik";
 
 
-function AddDomainModal({setAddModal}) {
+function AddDomainModal({setAddModal,Refresh,setRefresh}) {
 
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
@@ -18,11 +18,21 @@ function AddDomainModal({setAddModal}) {
         form.append('domain_name',values.domain_name)
         form.append('description',values.description)
         form.append('price',values.price)
-        form.append('image',values.img)
+        form.append('image',values.image)
 
         try{
             const response = await AddDomain(form)
             console.log(response)
+            if(response.status===200){
+                setAddModal(false)
+                setRefresh(!Refresh)
+                toast.success(response.message)
+
+            } else if(response.status===300){
+                toast.warning('domain with this domain name already exists.')
+            } else{
+                toast.error('something went wrong')
+            }
 
         }
         catch (error){
@@ -30,13 +40,14 @@ function AddDomainModal({setAddModal}) {
         }
     }
 
+   
     //formik
     const {values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
         initialValues:{
             domain_name:"",
             description:"",
             price:"",
-            img:""
+            image:""
         },
         validationSchema:AddDomainSchema,
         onSubmit,
@@ -84,7 +95,9 @@ function AddDomainModal({setAddModal}) {
                                     <span class="sr-only">Close modal</span>
                                 </button>
                                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                                        <form className="space-y-4 md:space-y-6" action="#" onSubmit={handleSubmit} encType="multipart/form-data">
+                                    <p className='font-extrabold text-2xl'>Add New Domain</p>
+                                        <form className="space-y-4 md:space-y-6" action="#"  onSubmit={handleSubmit} encType="multipart/form-data">
+            
                                             <div>
                                                 <label htmlFor="domain_name" className="block mb-2 text-sm font-medium text-black ">Enter Domain name</label>
                                                 <input type="text" name="domain_name"  
@@ -127,18 +140,18 @@ function AddDomainModal({setAddModal}) {
                                             </div>
                                             <div>
                                             <input
-                                            onChange={(evt)=>setFieldValue('img',evt.target.files[0])}
+                                            onChange={(evt)=>setFieldValue('image',evt.target.files[0])}
                                             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                             aria-describedby="user_avatar_help"
-                                            name="img"
-                                            id="img"
+                                            name="image"
+                                            id="image"
                                             type="file"
                                             required
                                           ></input>
                         
                                             </div>
 
-                                            <button type="submit" className="w-full text-black bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add</button>
+                                            <button  type="submit" className="w-full text-black bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add</button>
 
                                             <div className="flex items-center justify-between">
 
