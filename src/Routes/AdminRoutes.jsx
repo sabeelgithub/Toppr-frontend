@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import DashboradPage from '../Pages/Admin/DashboradPage'
 import ClientListPage from '../Pages/Admin/ClientListPage'
 import ExpertListPage from '../Pages/Admin/ExpertListPage'
@@ -8,20 +8,27 @@ import NotificationViewPage from '../Pages/Admin/NotificationViewPage'
 import DomainListPage from '../Pages/Admin/DomainListPage'
 import TutorialListPage from '../Pages/Admin/TutorialListPage'
 import SubTutorialPage from '../Pages/Admin/SubTutorialPage'
+import { useSelector } from 'react-redux'
+import Login from '../Pages/Login'
 
 
 function AdminRoutes() {
+  const isAuth = useSelector(state=>state.AdminReducer.token)
+ 
+ 
   return (
     <>
       <Routes>
-          <Route path="/dashboard" Component={DashboradPage} />
-          <Route path="/clients" Component={ClientListPage} />
-          <Route path="/experts" Component={ExpertListPage} />
-          <Route path="/notifications" Component={NotificationPage} />
-          <Route path="/notification-view/:id" Component={NotificationViewPage} />
-          <Route path="/domains" Component={DomainListPage} />
-          <Route path="/tutorials" Component={TutorialListPage} />
-          <Route path="/sub-tutorials" Component={SubTutorialPage} />
+
+
+          <Route path="/dashboard" element={isAuth ? <DashboradPage/> : <Navigate to="/login"/>} />
+          <Route path="/clients" element={ isAuth ? <ClientListPage/>:  <Navigate to="/login"/>} />
+          <Route path="/experts" element={ isAuth ? <ExpertListPage/>: <Navigate to="/login"/>} />
+          <Route path="/notifications" element={ isAuth ? <NotificationPage/>: <Navigate to="/login"/> } />
+          <Route path="/notification-view/:id" element={ isAuth ? <NotificationViewPage/> : <Navigate to="/login"/> } />
+          <Route path="/domains" element={ isAuth ? <DomainListPage/> : <Navigate to="/login"/>} />
+          <Route path="/tutorials" element={ isAuth ? <TutorialListPage/> : <Navigate to="/login"/>} />
+          <Route path="/sub-tutorials" element={ isAuth ? <SubTutorialPage/> : <Navigate to="/login"/>} />
       </Routes> 
     </>
   )

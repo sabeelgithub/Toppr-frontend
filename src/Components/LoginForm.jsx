@@ -5,6 +5,10 @@ import { useFormik } from 'formik'
 import { LoginSchema } from '../Validations/lofinvalidation'
 import { Login } from '../Axios/Services/CommenServices'
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux'
+import { ClientLogin } from '../Redux/ClientSlice'
+import { ExpertLogin } from '../Redux/ExpertSlice'
+import { AdminLogin } from '../Redux/AdminSlice'
 
 
 
@@ -12,21 +16,25 @@ function LoginForm() {
 
   const navigate = useNavigate()
 
+  const dispatch = useDispatch()
+
 
   const onSubmit = async ()=>{
-    console.log('hi')
-    console.log(values)
     try{
       const response = await Login(values)
-      console.log(response)
       if (response.status===200){
         toast.success(response.message) 
         if (response.person==='client'){
+          dispatch(ClientLogin({token:response.refresh,client:{username:response.username,person:response.person}}))
           navigate('/')
 
-        } else if(response.person==='admin'){
-          navigate('/admin/dashboard')
+        } else if (response.person==='expert'){
+          dispatch(ExpertLogin({token:response.refresh,expert:{username:response.username,person:response.person}}))
+           
 
+        } else if(response.person==='admin'){
+          dispatch(AdminLogin({token:response.refresh,admin:{username:response.username,person:response.person}}))
+          navigate('/admin/dashboard')
         }
 
       } else if (response.status === 600){
@@ -46,7 +54,6 @@ function LoginForm() {
      
     } catch (error) {
       console.log(error)
-      console.log('error occured')
 
     }
   }

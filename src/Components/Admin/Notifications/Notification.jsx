@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function Notification() {
     const [Data,setData] = useState([])
-    console.log(Data,'daaaaaaataaaaaaaaaaaaaa')
+
     useEffect(()=>{
         try{
             const fetchPending = async ()=> {

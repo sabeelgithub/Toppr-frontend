@@ -12,10 +12,10 @@ import { toast } from 'react-toastify';
 
 export default function NotificationView() {
     const [Data, setData] = useState()
-    console.log(Data)
+
 
     const { id } = useParams()
-    console.log(id)
+
 
     const navigate = useNavigate()
 

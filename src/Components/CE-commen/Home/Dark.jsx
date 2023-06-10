@@ -1,67 +1,153 @@
-import React from "react";
-import {
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Typography,
-    Button
-  } from "@material-tailwind/react";
-import cardpoto from '../../../Assets/card.jpg'
-   
-  export default function Dark() {
-    return (
-       
-      <div className="w-full bg-black p-5  flex flex-wrap pb-20">
-      <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto mt-16">
-  <a href="#">
-    <img className="rounded-t-lg" src={cardpoto} alt />
-  </a>
-  <div className="p-5">
-    <a href="#">
-      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-    </a>
-    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-    <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-      Read more
-      <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
-    </a>
-  </div>
-</div>
-
-<div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto mt-16">
-<a href="#">
-  <img className="rounded-t-lg" src={cardpoto} alt />
-</a>
-<div className="p-5">
-  <a href="#">
-    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-  </a>
-  <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-  <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-    Read more
-    <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
-  </a>
-</div>
-</div>
-
-<div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mx-auto mt-16">
-<a href="#">
-  <img className="rounded-t-lg" src={cardpoto} alt />
-</a>
-<div className="p-5">
-  <a href="#">
-    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
-  </a>
-  <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-  <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-    Read more
-    <svg aria-hidden="true" className="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
-  </a>
-</div>
-</div>
-      </div>
+import React, { useEffect, useState } from "react";
+// import {
+//   Card,
+//   CardHeader,
+//   CardBody,
+//   CardFooter,
+//   Typography,
+//   Button
+// } from "@material-tailwind/react";
+import Mathspoto from '../../../Assets/Mahematics.avif'
+import Biopoto from '../../../Assets/Biology.jpg'
+import Statipoto from '../../../Assets/statistics.jpg'
+import { getDomains } from "../../../Axios/Services/CommenServices";
+import DomainModal from "../Domain/DomainModal";
+import Experts from "../Experts/Experts";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 
-    );
+
+
+export default function Dark() {
+  const [Domain, setDomain] = useState([])
+  const [ShowDomainModal,setShowDomainModal] = useState(false)
+  const [FindItem,setFindItem] = useState('')
+
+  const client = useSelector(state => state.ClientReducer.token)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    try {
+      const fetchDomains = async () => {
+        const response = await getDomains()
+        setDomain(response.payload)
+
+      }
+      fetchDomains()
+
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }, [])
+
+  const fetch = (id)=>{
+    const selectedItem = Domain.find((item)=>item.id==id)
+    console.log(selectedItem)
+    setFindItem(selectedItem)
+
   }
+  return (
+
+    <>
+      <div>
+        <div className="flex justify-center bg-black p-9">
+        {ShowDomainModal ? <DomainModal setShowDomainModal={setShowDomainModal} FindItem={FindItem} /> : ''}
+        {Domain.length !== 0 ?  <h1 className="text-white font-extrabold text-4xl mt-5">Domains we offers</h1> :  <h1 className="text-white font-extrabold text-4xl mt-5">Coming Soon</h1>}
+         
+        </div>
+      </div>
+      <div className="w-full bg-black p-5  flex flex-nowrap overflow-x-scroll   pb-20 no-scrollbar">
+
+
+        {Domain.length !== 0 ? Domain.map((item) => {
+          return (
+            <div className="min-w-[380px] bg-white border m-8 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+              <a href="#">
+                <img className=" rounded-t-lg w-[380px] h-[380px] " src={`http://127.0.0.1:8000/${item.image}`} alt="product image" />
+              </a>
+              <div className="px-5 pb-5">
+                <a href="#">
+                  <h5 className="mt-4 text-xl font-semibold tracking-tight text-gray-900 dark:text-white truncate">{item.domain_name}</h5>
+                </a>
+
+                <div className="flex items-center justify-between mt-5">
+                  <span className="text-3xl font-bold text-gray-900 dark:text-white">₹{item.price}</span>
+                  <button onClick={()=>{
+                    if(client){
+                      setShowDomainModal(!ShowDomainModal)
+                      fetch(item.id)
+                    } else {
+                      toast.warning('Login Required')
+                      navigate('/login')
+                   
+
+                    } 
+                    
+                  }} href="#" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buy now</button>
+                </div>
+              </div>
+            </div>
+          )
+
+        }) : <div className="flex">
+           <div className="min-w-[380px] bg-white border m-8 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <a href="#">
+      <img className=" rounded-t-lg w-[380px] h-[380px] " src={Mathspoto} alt="product image" />
+    </a>
+    <div className="px-5 pb-5">
+      <a href="#">
+        <h5 className="mt-4 text-xl font-semibold tracking-tight text-gray-900 dark:text-white truncate">Mathematics</h5>
+      </a>
+
+      <div className="flex items-center justify-between mt-5">
+        <span className="text-3xl font-bold text-gray-900 dark:text-white">₹299</span>
+        <a href="#" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buy now</a>
+      </div>
+    </div>
+  </div>
+  <div className="min-w-[380px] bg-white border m-8 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <a href="#">
+      <img className=" rounded-t-lg w-[380px] h-[380px] " src={Biopoto} alt="product image" />
+    </a>
+    <div className="px-5 pb-5">
+      <a href="#">
+        <h5 className="mt-4 text-xl font-semibold tracking-tight text-gray-900 dark:text-white truncate">Biology</h5>
+      </a>
+
+      <div className="flex items-center justify-between mt-5">
+        <span className="text-3xl font-bold text-gray-900 dark:text-white">₹299</span>
+        <a href="#" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buy now</a>
+      </div>
+    </div>
+  </div>
+  <div className="min-w-[380px] bg-white border m-8 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <a href="#">
+      <img className=" rounded-t-lg w-[380px] h-[380px] " src={Statipoto} alt="product image" />
+    </a>
+    <div className="px-5 pb-5">
+      <a href="#">
+        <h5 className="mt-4 text-xl font-semibold tracking-tight text-gray-900 dark:text-white truncate">Statistics</h5>
+      </a>
+
+      <div className="flex items-center justify-between mt-5">
+        <span className="text-3xl font-bold text-gray-900 dark:text-white">₹299</span>
+        <a href="#" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Buy now</a>
+      </div>
+    </div>
+  </div>
+        </div>}
+
+      </div>
+     
+      <div className="flex justify-center bg-black">
+      <p className=" text-white font-extrabold text-4xl">Experts</p>
+      </div> 
+
+      {<Experts/>}
+
+    </>
+  );
+}

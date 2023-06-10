@@ -1,9 +1,9 @@
-import React, { useRef, useState, } from 'react'
+import React, { useEffect, useRef, useState, } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import '../Components/LoginForm.css'
 import { registrationSchema } from '../Validations/registrationValidation';
 import { useFormik } from 'formik';
-import { Register } from '../Axios/Services/CommenServices';
+import { Register, getDomains } from '../Axios/Services/CommenServices';
 import { toast } from 'react-toastify';
 
 
@@ -11,12 +11,28 @@ import { toast } from 'react-toastify';
 
 
 function SignupForm() {
+  const [Domain,setDomain] = useState([])
 
   const [RegisterPerson, setRegisterPerson] = useState('client')
 
   const refDomain = useRef()
 
   const navigate = useNavigate()
+
+  useEffect(()=>{
+    try{
+      const fetchDomain = async ()=>{
+        const response = await getDomains()
+        setDomain(response.payload)
+
+      }
+      fetchDomain()
+
+    }
+    catch (error){
+      console.log(error)
+    }
+  },[])
  
 
   const onSubmit = async () => {
@@ -194,16 +210,20 @@ function SignupForm() {
                 <select 
                 ref={refDomain} className="select w-full rounded-lg" required >
                   <option value='' selected>Choose Domain</option>
-                  <option value='web development'>web development</option>
-                  <option value='Data science'>Data science</option>
-                  <option value='Artificial Inteligence'>Artificial Inteligence</option>
+                  {Domain.length !==0 && Domain.map((item)=>{
+                    return (
+                      <option value={item.id} >{item.domain_name}</option>
+
+                    )
+                  })}
+                 
                 </select>
               </div>
 
               <div className='mt-5 md:mt-0'>
 
                 <input name="profile_poto" required 
-                  id="profile_poto" accept='profile_poto/*'  onChange={(evt)=>setFieldValue('profile_poto',evt.target.files[0])} className="block  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" type="file" />
+                  id="profile_poto" accept='image/*'  onChange={(evt)=>setFieldValue('profile_poto',evt.target.files[0])} className="block  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" type="file" />
 
               </div>
               <div className='mt-5 md:mt-0'>

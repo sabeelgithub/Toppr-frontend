@@ -1,6 +1,6 @@
-import { Fragment, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
+import {  useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { Dialog, Popover,  } from '@headlessui/react'
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -10,8 +10,11 @@ import {
   SquaresPlusIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import icon from "../Assets/ICON.jpg"
+
+import { useDispatch, useSelector } from 'react-redux'
+import { ClientLogout } from '../Redux/ClientSlice'
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -31,6 +34,12 @@ function classNames(...classes) {
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const client = useSelector((state)=>state.ClientReducer.token)
+  const user = useSelector((state)=>state.ClientReducer.client)
+ 
 
   return (
     <>
@@ -55,8 +64,8 @@ export default function Header() {
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
          
         <Link to="/" className="text-sm font-semibold leading-6 text-white">Home</Link>
-        <Link to="" className="text-sm font-semibold leading-6 text-white ">Domains</Link>
-        <Link to="" className="text-sm font-semibold leading-6 text-white ">Experts</Link>
+        <Link to="/domains" className="text-sm font-semibold leading-6 text-white ">Domains</Link>
+        <Link to="/experts" className="text-sm font-semibold leading-6 text-white ">Experts</Link>
         <Link to="" className="text-sm font-semibold leading-6 text-white ">About</Link>
         
       
@@ -64,10 +73,16 @@ export default function Header() {
         </Popover.Group>
         
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-        <p className='text-white mx-32 mt-2'>hi</p>
-          <Link  to="/login" className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
-            Log in 
-          </Link>
+        <p className='text-white mx-32 mt-2'>{user?.username}</p>
+        {client ?  <button  onClick={()=>{
+          dispatch(ClientLogout())
+          navigate('/')
+        }} className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
+        Log out 
+      </button> : <Link  to="/login" className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
+      Log In 
+    </Link> }
+          
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>

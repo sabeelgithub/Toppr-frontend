@@ -5,12 +5,15 @@ import { HiUsers } from "react-icons/hi";
 import { IoIosNotifications } from "react-icons/io";
 import { BiFootball } from "react-icons/bi";
 import { MdAnalytics, MdAdminPanelSettings, MdPhotoLibrary,  } from "react-icons/md";
-import { GrLogout } from "react-icons/gr";
+import { MdLogout } from "react-icons/md";
 import HamburgerButton from "../HamburgerMenuButton/HamburgerButton";
 import { FaCity } from "react-icons/fa";
 import icon from "../../../../Assets/ICON.jpg"
+import { useDispatch } from "react-redux";
+import { AdminLogout } from "../../../../Redux/AdminSlice";
 
 const Sidebar = () => {
+    const dispatch = useDispatch()
     const navigate = useNavigate();
   
     const [open, setOpen] = useState(true);
@@ -47,7 +50,9 @@ const Sidebar = () => {
         { title: "Banner", path: "", src: <MdPhotoLibrary /> },
     ];
     const handleLogout = () => {
-        navigate("/admin");
+        navigate("/login");
+        dispatch(AdminLogout())
+
      
     };
 
@@ -89,10 +94,10 @@ const Sidebar = () => {
                     <li
                         className={`flex items-center gap-x-6 p-3 text-base font-normal rounded-lg cursor-pointer dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700  'bg-gray-200 dark:bg-gray-700' }`}
                         onClick={handleLogout}>
-                        <span className="text-2xl">
-                            <GrLogout />
+                        <span className="text-2xl text-white">
+                            <MdLogout />
                         </span>
-                        <span className={`${!open && "hidden"} origin-left duration-300 hover:block`}>Logout</span>
+                        <span className={`${!open && "hidden"} text-white origin-left duration-300 hover:block`}>Logout</span>
                     </li>
                 </ul>
             </div>

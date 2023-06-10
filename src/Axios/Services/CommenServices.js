@@ -33,3 +33,74 @@ export const Login = async(values) =>{
         console.log('some error occured')
     }
 }
+
+// getDomins
+export const getDomains = async ()=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const response = await axiosClientInstance.get('adminpanel/domains/',config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+
+}
+
+// get experts
+export const getExperts = async ()=>{
+    try{
+        const config ={
+            headers:{
+                "Content-type":"application/json"
+            }
+        }
+        const response = await axiosClientInstance.get('adminpanel/experts/',config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error)
+    }
+}
+
+export const getTutorials = async ()=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+
+            }
+        }
+        const response = await axiosClientInstance.get('adminpanel/tutorials/',config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error)
+    }
+}
+
+// sub-tutorial
+
+export const getSubTutorials = async ()=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json"
+
+            }
+        }
+        const response = await axiosClientInstance.get('adminpanel/sub-tutorials/',config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error)
+    }
+}
