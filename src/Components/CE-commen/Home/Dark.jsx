@@ -16,6 +16,7 @@ import Experts from "../Experts/Experts";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
+import DomainSuccessModal from "../Domain/DomainSuccessModal";
 
 
 
@@ -24,15 +25,20 @@ export default function Dark() {
   const [Domain, setDomain] = useState([])
   const [ShowDomainModal,setShowDomainModal] = useState(false)
   const [FindItem,setFindItem] = useState('')
+  const [ShowDomainSuccessModal,setShowDomainSuccessModal] = useState(false)
+  
 
-  const client = useSelector(state => state.ClientReducer.token)
+  const token = useSelector(state => state.ClientReducer.accessToken)
   const navigate = useNavigate()
 
   useEffect(() => {
     try {
       const fetchDomains = async () => {
         const response = await getDomains()
-        setDomain(response.payload)
+        if(response){
+          setDomain(response?.payload)
+
+        }
 
       }
       fetchDomains()
@@ -44,7 +50,7 @@ export default function Dark() {
   }, [])
 
   const fetch = (id)=>{
-    const selectedItem = Domain.find((item)=>item.id==id)
+    const selectedItem = Domain?.find((item)=>item.id==id)
     console.log(selectedItem)
     setFindItem(selectedItem)
 
@@ -54,15 +60,17 @@ export default function Dark() {
     <>
       <div>
         <div className="flex justify-center bg-black p-9">
-        {ShowDomainModal ? <DomainModal setShowDomainModal={setShowDomainModal} FindItem={FindItem} /> : ''}
-        {Domain.length !== 0 ?  <h1 className="text-white font-extrabold text-4xl mt-5">Domains we offers</h1> :  <h1 className="text-white font-extrabold text-4xl mt-5">Coming Soon</h1>}
+        {ShowDomainModal ? <DomainModal setShowDomainModal={setShowDomainModal} FindItem={FindItem} setShowDomainSuccessModal={setShowDomainSuccessModal} /> : ''}
+        {ShowDomainSuccessModal ? <DomainSuccessModal FindItem={FindItem} setShowDomainSuccessModal={setShowDomainSuccessModal}  /> : ''}
+       
+        {Domain?.length !== 0 ?  <h1 className="text-white font-extrabold text-4xl mt-5">Domains we offers</h1> :  <h1 className="text-white font-extrabold text-4xl mt-5">Coming Soon</h1>}
          
         </div>
       </div>
       <div className="w-full bg-black p-5  flex flex-nowrap overflow-x-scroll   pb-20 no-scrollbar">
 
 
-        {Domain.length !== 0 ? Domain.map((item) => {
+        {Domain?.length !== 0 ? Domain?.map((item) => {
           return (
             <div className="min-w-[380px] bg-white border m-8 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
               <a href="#">
@@ -76,8 +84,9 @@ export default function Dark() {
                 <div className="flex items-center justify-between mt-5">
                   <span className="text-3xl font-bold text-gray-900 dark:text-white">₹{item.price}</span>
                   <button onClick={()=>{
-                    if(client){
+                    if(token){
                       setShowDomainModal(!ShowDomainModal)
+                      // setShowDomainSuccessModal(!ShowDomainSuccessModal)
                       fetch(item.id)
                     } else {
                       toast.warning('Login Required')

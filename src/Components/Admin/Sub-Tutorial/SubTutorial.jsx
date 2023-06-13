@@ -3,6 +3,7 @@ import { getSubTutorials } from '../../../Axios/Services/AdminServices'
 import DeleteSubModal from './DeleteSubModal'
 import AddSubModal from './AddSubModal'
 import EditSubModal from './EditSubModal'
+import { useSelector } from 'react-redux'
 
 function SubTutorial() {
   const [Data,setData]=useState([])
@@ -12,11 +13,18 @@ function SubTutorial() {
   const [Refresh,setRefresh]= useState(false)
   const [FindItem,setFindItem]= useState('')
 
+  
+  const token = useSelector(state=>state.AdminReducer.accessToken)
+
   useEffect(()=>{
     try{
         const  fetchSubTutorials = async ()=>{
-            const response = await getSubTutorials()
-            setData(response.payload)
+            const response = await getSubTutorials(token)
+            if(response){
+                setData(response.payload)
+                
+            }
+            
         }  
         fetchSubTutorials()
 
@@ -28,7 +36,7 @@ function SubTutorial() {
   },[Refresh])
 
   const FetchingMatch = (id)=>{
-    const selectedItem = Data.find((item)=>item.id === id)
+    const selectedItem = Data?.find((item)=>item.id === id)
     setFindItem(selectedItem)
     console.log(selectedItem)
     } 
@@ -39,11 +47,11 @@ function SubTutorial() {
     {DeleteModal ? <DeleteSubModal setDeleteModal={setDeleteModal}  Refresh={Refresh} setRefresh={setRefresh} FindItem={FindItem} /> : ''}
     {AddModal ? <AddSubModal setAddModal={setAddModal} Refresh={Refresh} setRefresh={setRefresh} /> : ''}
     {EditModal ? <EditSubModal setEditModal={setEditModal} Refresh={Refresh} setRefresh={setRefresh} FindItem={FindItem} /> : ""}
-    { Data.length !==0 ?  <div className='w-full flex justify-end'><button onClick={()=>{
+    { Data?.length !==0 ?  <div className='w-full flex justify-end'><button onClick={()=>{
         setAddModal(true)
     }}  className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-2 rounded'>ADD</button></div> : "" }
     <div className=" flex flex-col overflow-x-auto">
-        {Data.length === 0 ? <div className='flex justify-center flex-wrap'> <div className='bg-white text-center w-full font-extrabold'>No Records </div> <button onClick={()=>{
+        {Data?.length === 0 ? <div className='flex justify-center flex-wrap'> <div className='bg-white text-center w-full font-extrabold'>No Records </div> <button onClick={()=>{
             setAddModal(true)
         }} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mt-4 px-4 mb-2 rounded'>ADD</button> </div> :
             <div className="sm:-mx-6 lg:-mx-8">
@@ -61,7 +69,7 @@ function SubTutorial() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Data.length !== 0 && Data.map((item, index) => {
+                                {Data?.length !== 0 && Data?.map((item, index) => {
                                     return (<tr className="border-b dark:border-neutral-500">
                                         <td className="text-white whitespace-nowrap px-6 py-4 font-medium ">{index + 1}</td>
                                         <td className="text-white whitespace-nowrap px-6 py-4">{item.sub_tutorial_name}</td>

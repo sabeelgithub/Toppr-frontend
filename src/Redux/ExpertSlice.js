@@ -4,16 +4,20 @@ import { createSlice } from "@reduxjs/toolkit";
 const ExpertSlice = createSlice({
     name: 'expert',
     initialState: {
-        token: null,
+        // token: null,
+        refreshToken:null,
+        accessToken:null,
         expert: null
     },
     reducers: {
         ExpertLogin: (state, action) => {
-            state.token = action.payload.token
+            state.refreshToken = action.payload.refreshToken
+            state.accessToken = action.payload.accessToken
             state.expert = action.payload.expert
         },
         ExpertLogout: (state, action) => {
-            state.token = null;
+            state.refreshToken = null
+            state.accessToken = null
             state.expert = null
         }
 

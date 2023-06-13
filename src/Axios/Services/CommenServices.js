@@ -42,7 +42,7 @@ export const getDomains = async ()=>{
                 "Content-type":"application/json"
             }
         }
-        const response = await axiosClientInstance.get('adminpanel/domains/',config)
+        const response = await axiosClientInstance.get('commen/domains/',config)
         return response.data
 
     }
@@ -60,7 +60,7 @@ export const getExperts = async ()=>{
                 "Content-type":"application/json"
             }
         }
-        const response = await axiosClientInstance.get('adminpanel/experts/',config)
+        const response = await axiosClientInstance.get('commen/experts/',config)
         return response.data
 
     }
@@ -77,7 +77,7 @@ export const getTutorials = async ()=>{
 
             }
         }
-        const response = await axiosClientInstance.get('adminpanel/tutorials/',config)
+        const response = await axiosClientInstance.get('commen/tutorials/',config)
         return response.data
 
     }
@@ -96,7 +96,7 @@ export const getSubTutorials = async ()=>{
 
             }
         }
-        const response = await axiosClientInstance.get('adminpanel/sub-tutorials/',config)
+        const response = await axiosClientInstance.get('commen/sub-tutorials/',config)
         return response.data
 
     }

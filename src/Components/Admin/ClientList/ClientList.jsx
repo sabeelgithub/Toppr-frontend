@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { getClientsList, handleClientStatus } from '../../../Axios/Services/AdminServices'
+import { useSelector } from 'react-redux'
 
 function ClientList() {
   const [Data, setData] = useState([])
   const [Refresh, setRefresh] = useState(false)
+  const token = useSelector(state=>state.AdminReducer.accessToken)
 
-  console.log(Data)
   useEffect(() => {
     try {
       const fetchClients = async () => {
-        const response = await getClientsList()
-        setData(response.payload)
+        const response = await getClientsList(token)
+        if(response){
+          setData(response?.payload)
+
+        }
+        
       }
       fetchClients()
 
@@ -28,7 +33,7 @@ function ClientList() {
         id: id,
         status: status
       }
-      const response = await handleClientStatus(data)
+      const response = await handleClientStatus(token,data)
       setRefresh(!Refresh)
       console.log(response)
     }
@@ -43,7 +48,7 @@ function ClientList() {
 
       <div className=" bg-black flex flex-col overflow-x-auto">
 
-        {Data.length === 0 ? <div className='bg-white text-center font-extrabold'>No Records</div> :
+        {Data?.length === 0 ? <div className='bg-white text-center font-extrabold'>No Records</div> :
           <div className="sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
               <div className="overflow-x-auto">
@@ -62,7 +67,7 @@ function ClientList() {
                   <tbody>
 
 
-                    {Data.length !== 0 && Data.map((item, index) => {
+                    {Data?.length !== 0 && Data?.map((item, index) => {
                       return (
 
                         <tr className="border-b dark:border-neutral-500">

@@ -3,6 +3,7 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { DeleteDomains } from "../../../Axios/Services/AdminServices";
 import { toast } from 'react-toastify';
+import { useSelector } from "react-redux";
 
 
 function DeleteDomainModal({setDeleteModal,Id,name,Refresh,setRefresh}) {
@@ -10,15 +11,20 @@ function DeleteDomainModal({setDeleteModal,Id,name,Refresh,setRefresh}) {
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
 
-    const DeleteDomain = async(id)=>{
-        const response = await DeleteDomains(id)
-        if (response.status === 200){
-            setRefresh(!Refresh)
-            toast.success(response.message)
+    const token = useSelector(state=>state.AdminReducer.accessToken)
 
-        } else {
-            toast.error('somthing went wrong')
-        }
+    const DeleteDomain = async(id)=>{
+        const response = await DeleteDomains(token,id)
+        if (response?.status === 200){
+                setRefresh(!Refresh)
+                toast.success(response.message)
+    
+            } else {
+                toast.error('somthing went wrong ok')
+            }
+
+        
+        
     }
 
     return (

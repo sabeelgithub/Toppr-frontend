@@ -8,8 +8,9 @@ export default function Experts() {
     try{
       const fetchExperts = async ()=>{
         const response = await getExperts()
-        console.log(response)
-        setExpert(response.payload)
+        if(response){
+          setExpert(response?.payload)
+        }
         
       }
       fetchExperts()
@@ -22,7 +23,7 @@ export default function Experts() {
   },[])
   return (
     <div className=" h-full pt-16 pb-16 bg-black flex justify-around flex-wrap">
-    {Expert.length !==0 ? Expert.map((item)=>{
+    {Expert?.length !== 0 ? Expert?.map((item)=>{
       return (
         <div className='m-4' >
         <div className='w-60 h-60 '>
@@ -36,7 +37,7 @@ export default function Experts() {
 
       )
     }): 
-    <div className="flex justify-around flex-wrap ">
+    <div className="flex justify-around flex-wrap">
     <div className='m-6' >
     <div className='w-60 h-60 '>
       <img className='w-60 h-60 object-cover rounded-2xl'  src={dummyprofile}  alt="profile_poto" />

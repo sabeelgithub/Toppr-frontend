@@ -37,7 +37,7 @@ export default function Header() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const client = useSelector((state)=>state.ClientReducer.token)
+  const token = useSelector((state)=>state.ClientReducer.accessToken)
   const user = useSelector((state)=>state.ClientReducer.client)
  
 
@@ -74,7 +74,7 @@ export default function Header() {
         
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
         <p className='text-white mx-32 mt-2'>{user?.username}</p>
-        {client ?  <button  onClick={()=>{
+        {token ?  <button  onClick={()=>{
           dispatch(ClientLogout())
           navigate('/')
         }} className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">

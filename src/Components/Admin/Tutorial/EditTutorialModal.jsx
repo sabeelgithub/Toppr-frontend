@@ -5,6 +5,7 @@ import { EditTutorial, getDomains } from "../../../Axios/Services/AdminServices"
 import { toast } from 'react-toastify';
 import { useFormik } from "formik";
 import { EditTutorialSchema } from "../../../Validations/Tutorial/EditTutorial";
+import { useSelector } from "react-redux";
 
 
 function EditTutorialModal({setEditModal,FindItem,Refresh,setRefresh}) {
@@ -12,6 +13,9 @@ function EditTutorialModal({setEditModal,FindItem,Refresh,setRefresh}) {
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
     const [Data,setData] = useState([])
+
+    
+    const token = useSelector(state=>state.AdminReducer.accessToken)
  
 
   
@@ -21,9 +25,13 @@ function EditTutorialModal({setEditModal,FindItem,Refresh,setRefresh}) {
     useEffect(()=>{
         try{
             const fetchDomains = async()=>{
-                const response = await getDomains()
-                const filtered_data = response.payload.filter((item)=>item.id !== FindItem.domain_id)
-                setData(filtered_data)
+                const response = await getDomains(token)
+                if(response){
+                    const filtered_data = response.payload.filter((item)=>item.id !== FindItem.domain_id)
+                    setData(filtered_data)
+
+                }
+                
             }
             fetchDomains()
 
@@ -36,9 +44,9 @@ function EditTutorialModal({setEditModal,FindItem,Refresh,setRefresh}) {
     const onSubmit = async()=>{
    
         try{
-            const response = await EditTutorial(values)
-            console.log(response)
-            if(response.status===200){
+            const response = await EditTutorial(token,values)
+            
+            if(response?.status===200){
                 setEditModal(false)
                 setRefresh(!Refresh)
                 toast.success(response.message)

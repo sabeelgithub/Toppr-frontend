@@ -5,15 +5,15 @@ import { AddDomainSchema } from "../../../Validations/Domain/AddDomain";
 import { AddDomain } from "../../../Axios/Services/AdminServices";
 import { toast } from 'react-toastify';
 import { useFormik } from "formik";
+import { useSelector } from "react-redux";
 
 
 function AddDomainModal({setAddModal,Refresh,setRefresh}) {
 
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
+    const token = useSelector(state=>state.AdminReducer.accessToken)
     const onSubmit = async()=>{
-        console.log('eneted')
-        console.log(values)
         const form = new FormData()
         form.append('domain_name',values.domain_name)
         form.append('description',values.description)
@@ -21,8 +21,7 @@ function AddDomainModal({setAddModal,Refresh,setRefresh}) {
         form.append('image',values.image)
 
         try{
-            const response = await AddDomain(form)
-            console.log(response)
+            const response = await AddDomain(token,form)
             if(response.status===200){
                 setAddModal(false)
                 setRefresh(!Refresh)

@@ -7,19 +7,19 @@ import DomainPage from '../Pages/DomainPage';
 import ExpertsPage from '../Pages/ExpertsPage';
 import { useSelector } from 'react-redux';
 import DashboradPage from '../Pages/Admin/DashboradPage';
+import DomainViewPage from '../Pages/Client/DomainViewPage';
 
 
 
 function ClientRoutes() {
-  const isAuth = useSelector(state=>state.AdminReducer.token)
-  const isCAuth = useSelector(state=>state.ClientReducer.token)
+  const isAuth = useSelector(state=>state.AdminReducer.accessToken)
+  const isCAuth = useSelector(state=>state.ClientReducer.accessToken)
 
 
   return (
     <>
         <Routes>
-    
-            {/*admin*/}
+ 
             <Route path="/" element={isAuth ? <DashboradPage/> : <Home/>}/>
             {/*  <Route path="/login" element={isAuth ? <DashboradPage/> : <Login/>} />
                  <Route path="/register"  element={isAuth ? <DashboradPage/> : <Signup/>} />
@@ -27,10 +27,11 @@ function ClientRoutes() {
             <Route path="/domains"  element={isAuth ? <DashboradPage/> : <DomainPage/>} />
             <Route path="/experts"  element={isAuth ? <DashboradPage/> : <ExpertsPage/>} />
               
-            {/*client and admin*/} 
+
             <Route path="/login" element={isCAuth ? <Home/> : (isAuth ? <DashboradPage/> : <Login/>)} />
             <Route path="/register" element={isCAuth ? <Home/> : (isAuth ? <DashboradPage/> : <Signup/>)} />
-          
+            <Route path="/domain/:domain_name" element={isCAuth ? <DomainViewPage/> : <Navigate to="/login"/> } />
+
         </Routes>
         
     </>

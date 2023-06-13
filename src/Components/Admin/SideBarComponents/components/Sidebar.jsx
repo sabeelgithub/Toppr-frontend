@@ -35,15 +35,11 @@ const Sidebar = () => {
        
         
         {
-            title: "Ground-Admin",
-            path: "",
+            title: "Domain Purchase",
+            path: "/admin/domain-purchase",
             src: <MdAdminPanelSettings />,
         },
-        {
-            title: "Chat",
-            path: "",
-            src: <BsChatDotsFill />,
-        },
+       
         { title: "Bookings", path: "", src: <BsBorderWidth /> },
        
         { title: "Add City", path: "", src: <FaCity /> },

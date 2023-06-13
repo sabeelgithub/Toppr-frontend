@@ -5,18 +5,19 @@ import { AddDomainSchema } from '../../../Validations/Domain/AddDomain';
 import { useFormik } from 'formik';
 import { editDomains } from '../../../Axios/Services/AdminServices';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 function EditDomainModal({setEditModal,FindItem,Refresh,setRefresh}) {
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
-    console.log(FindItem)
+    
+    const token = useSelector(state=>state.AdminReducer.accessToken)
 
    
 
     
 
     const onSubmit = async ()=>{
-        console.log('hi')
         const form = new FormData()
         form.append('id',FindItem.id)
         form.append('domain_name',values.domain_name)
@@ -25,15 +26,11 @@ function EditDomainModal({setEditModal,FindItem,Refresh,setRefresh}) {
         if (values.image !== null){
             form.append('image',values.image)
         }
-        form.forEach((key,value) => {
-        console.log(key,value)
-        });
 
 
         try {
           
-            const response = await editDomains(form)
-            console.log(response)
+            const response = await editDomains(token,form)
             if (response.status===200){
                 setEditModal(false)
                 setRefresh(!Refresh)

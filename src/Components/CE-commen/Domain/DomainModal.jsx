@@ -3,36 +3,58 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PaperClipIcon } from '@heroicons/react/20/solid'
 import { toast } from 'react-toastify';
-import { getSubTutorials, getTutorials } from "../../../Axios/Services/CommenServices";
+
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { button } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
+import jwt from 'jwt-decode'
+import { domain_purchase, getSubTutorials, getTutorials } from "../../../Axios/Services/ClientServices";
+import DomainSuccessModal from "./DomainSuccessModal";
 
 
-function DomainModal({ setShowDomainModal, FindItem }) {
+
+function DomainModal({ setShowDomainModal, FindItem ,setShowDomainSuccessModal}) {
 
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
     const [Tutorials,setTutorials] = useState([])
     const [SubTutorial,setSubTutorial] = useState([])
-    console.log(Tutorials,'cheeeeeeeeeek')
-    console.log(SubTutorial,'aaayo')
+    
+
+
+    
+    const token = useSelector(state=>state.ClientReducer.accessToken)
+
+    const user = jwt(token)
+
+    
+ 
+
+
+    
 
     useEffect(()=>{
         try{
             const fetchTutorials = async()=>{
-                const response = await getTutorials()
-                console.log(response,'tutttttttttorials')
-                const filter = response.payload.filter((item)=>item.domain_id===FindItem.id)
-                setTutorials(filter)
+                const response = await getTutorials(token)
+                if(response){
+                    const filter = response?.payload.filter((item)=>item.domain_id===FindItem.id)
+                    setTutorials(filter)
+
+                }
+                
 
             
             }
             fetchTutorials()
             const fetchSubTutorials = async()=>{
-                const response = await getSubTutorials()
-                console.log(response,'sub tutoooorial')
-                const filter = response.payload.filter((item)=>item.domain_id===FindItem.id)
-                setSubTutorial(filter)
+                const response = await getSubTutorials(token)
+                if(response){
+                    const filter = response?.payload.filter((item)=>item.domain_id===FindItem.id)
+                    setSubTutorial(filter)
+
+                }
+                
 
             
             }
@@ -45,11 +67,35 @@ function DomainModal({ setShowDomainModal, FindItem }) {
 
     },[])
 
+    const domain_order = async(order_id)=>{
+        console.log(order_id,'ivde ethikn')
+        const data={
+            order_id:order_id,
+            domain:FindItem.id,
+            domain_name:FindItem.domain_name,
+            price:FindItem.price,
+            user : user.user_id
+        }
+        const response = await domain_purchase(token,data)
+        console.log(response,'chek it')
+        if (response){
+            if (response?.status===200){
+                setShowDomainModal(false)
+                setShowDomainSuccessModal(true)
+
+            } else {
+                toast.error('something went wrong')
+            }
+
+        }
+
+    }
+
 
 
     return (
         <>
-
+        
             <Transition.Root show={open} as={Fragment}>
                 <Dialog
                     as="div"
@@ -106,14 +152,14 @@ function DomainModal({ setShowDomainModal, FindItem }) {
                                                         <div className="px-4 py-6 sm:gap-4 sm:px-0 ">
 
                                                             <p className="mt-1 text-sm  leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                                                {FindItem.description}
+                                                                {FindItem?.description}
 
                                                             </p>
                                                         </div>
                                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                                             <dt className="text-sm font-medium leading-6 text-gray-900">Tutorials coming under this</dt>
                                                             <div className="md:flex ">
-                                                            {Tutorials.length !==0 ? Tutorials.map((item)=>{
+                                                            {Tutorials?.length !==0 ? Tutorials?.map((item)=>{
                                                                 return (
                                                                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{item.tutorial_name} ,</dd>
 
@@ -125,7 +171,7 @@ function DomainModal({ setShowDomainModal, FindItem }) {
                                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                                             <dt className="text-sm font-medium leading-6 text-gray-900">Sub Tutorial coming uder this</dt>
                                                             <div className="md:flex ">
-                                                            {SubTutorial.length !==0 ? SubTutorial.map((item)=>{
+                                                            {SubTutorial?.length !==0 ? SubTutorial?.map((item)=>{
                                                                 return (
                                                                     <dd className="mt-1 text-sm leading-6 text-gray-700 md:col-span-2 sm:mt-0">{item.sub_tutorial_name} ,</dd>
 
@@ -138,7 +184,7 @@ function DomainModal({ setShowDomainModal, FindItem }) {
                                                         <dt className="text-sm font-medium leading-6 text-gray-900">price</dt>
                                                         <div className="md:flex ">
                                                        
-                                                                <dd className="mt-1  leading-6 text-green-500 md:col-span-2 sm:mt-0 font-extrabold text-2xl">₹{FindItem.price}</dd>
+                                                                <dd className="mt-1  leading-6 text-green-500 md:col-span-2 sm:mt-0 font-extrabold text-2xl">₹{FindItem?.price}</dd>
 
                                                           
                                                         </div>
@@ -151,7 +197,7 @@ function DomainModal({ setShowDomainModal, FindItem }) {
                                                     </dl>
                                                 </div>
                                                   
-                                                {SubTutorial.length !==0 ? <div className=" mt-5  flex justify-center">
+                                                {SubTutorial?.length !==0 ? <div className=" mt-5  flex justify-center">
                                                 <PayPalScriptProvider options={{"client-id":"AT1Ktl9NZX0bdIVhIFfvOjqfKDW5TvuaFxVO5lVaTdnSar8jCMdbbW6ZEDCGdNznqKdAUO1LCQO5B3Az"}}>
                                                 <PayPalButtons style={{ layout: "vertical" }} className="w-2/5"  
                                                 createOrder={(data,actions)=>{
@@ -167,9 +213,8 @@ function DomainModal({ setShowDomainModal, FindItem }) {
                                                 }} 
                                                 onApprove={(data,actions)=>{
                                                     return actions.order.capture().then((response)=>{
-                                                        alert('success')
                                                         console.log(response)
-
+                                                        domain_order(response.id)
                                                     })
                                                  }
                                                 

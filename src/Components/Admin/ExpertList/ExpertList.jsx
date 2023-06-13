@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { getExpertsList, handleExpertStatus } from '../../../Axios/Services/AdminServices'
+import { useSelector } from 'react-redux'
 
 
 function ExpertList() {
     const [Data, setData] = useState([])
     const [Refresh, setRefresh] = useState(false)
+    const token = useSelector(state=>state.AdminReducer.accessToken)
 
-    console.log(Data, 'daaataaaa')
     useEffect(() => {
         try {
             const fetchExperts = async () => {
-                const response = await getExpertsList()
+                const response = await getExpertsList(token)
                 console.log(response)
-                setData(response.payload)
+                setData(response?.payload)
                 
             }
             fetchExperts()
@@ -31,7 +32,7 @@ function ExpertList() {
                 id: id,
                 status: status
             }
-            const response = await handleExpertStatus(data)
+            const response = await handleExpertStatus(token,data)
             console.log(response)
             setRefresh(!Refresh)
         }
@@ -44,7 +45,7 @@ function ExpertList() {
         <div className='bg-white h-full px-20 py-20'>
 
             <div className=" bg-black flex flex-col overflow-x-auto">
-                {Data.length === 0 ? <div className='bg-white text-center font-extrabold'>No Records</div> :
+                {Data?.length === 0 ? <div className='bg-white text-center font-extrabold'>No Records</div> :
                     <div className="sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                             <div className="overflow-x-auto">
@@ -62,7 +63,7 @@ function ExpertList() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {Data.length !== 0 && Data.map((item, index) => {
+                                        {Data?.length !== 0 && Data?.map((item, index) => {
                                             return (<tr className="border-b dark:border-neutral-500">
                                                 <td className="text-white whitespace-nowrap px-6 py-4 font-medium ">{index + 1}</td>
                                                 <td className="text-white whitespace-nowrap px-6 py-4">{item.username}</td>

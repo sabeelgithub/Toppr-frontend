@@ -3,6 +3,7 @@ import DeleteDomainModal from './DeleteDomainModal'
 import AddDomainModal from './AddDomainModal'
 import EditDomainModal from './EditDomainModal'
 import { getDomains } from '../../../Axios/Services/AdminServices'
+import { useSelector } from 'react-redux'
 
 function Domains() {
     const [Data, setData] = useState([])
@@ -14,13 +15,19 @@ function Domains() {
     const [Refresh,setRefresh] = useState(false)
     const [FindItem,setFindItem] = useState('') // for edit
 
+    const token = useSelector(state=>state.AdminReducer.accessToken)
+
 
     useEffect(()=>{
         try{
             const fetchDomains = async()=>{
-                const response = await getDomains()
+                const response = await getDomains(token)
                 console.log(response)
-                setData(response.payload)
+                if(response){
+                    setData(response?.payload)
+
+                }
+                
             }
             fetchDomains()
            
@@ -39,7 +46,7 @@ function Domains() {
     // edit button
     const editDomain = async(id)=>{
         setID(id)
-        const selectedItem = Data.find((item) => item.id === id)
+        const selectedItem = Data?.find((item) => item.id === id)
         setFindItem(selectedItem)
         
     }
@@ -48,9 +55,9 @@ function Domains() {
     {DeleteModal ? <DeleteDomainModal setDeleteModal={setDeleteModal} Id={Id} name={Name} Refresh={Refresh} setRefresh={setRefresh} /> : ''}
     {AddModal ? <AddDomainModal  setAddModal={setAddModal} Refresh={Refresh} setRefresh={setRefresh} /> : ''}
     {EditModal ? <EditDomainModal  setEditModal={setEditModal} FindItem={FindItem} Refresh={Refresh} setRefresh={setRefresh} /> : ''}
-    { Data.length !==0 ?  <div className='w-full flex justify-end'><button  onClick={()=>{setAddModal(!AddModal)}} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-2 rounded'>ADD</button></div> : "" }
+    { Data?.length !==0 ?  <div className='w-full flex justify-end'><button  onClick={()=>{setAddModal(!AddModal)}} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mb-2 rounded'>ADD</button></div> : "" }
     <div className=" flex flex-col overflow-x-auto">
-        {Data.length === 0 ? <div className='flex justify-center flex-wrap'> <div className='bg-white text-center w-full font-extrabold'>No Records </div> <button  onClick={()=>{setAddModal(!AddModal)}} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mt-4 px-4 mb-2 rounded'>ADD</button> </div> :
+        {Data?.length === 0 ? <div className='flex justify-center flex-wrap'> <div className='bg-white text-center w-full font-extrabold'>No Records </div> <button  onClick={()=>{setAddModal(!AddModal)}} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 mt-4 px-4 mb-2 rounded'>ADD</button> </div> :
             <div className="sm:-mx-6 lg:-mx-8">
                 <div className="bg-black inline-block min-w-full py-2 sm:px-6 lg:px-8">
                     <div className="overflow-x-auto">
@@ -66,7 +73,7 @@ function Domains() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Data.length !== 0 && Data.map((item, index) => {
+                                {Data?.length !== 0 && Data?.map((item, index) => {
                                     return (<tr className="border-b dark:border-neutral-500">
                                         <td className="text-white whitespace-nowrap px-6 py-4 font-medium ">{index + 1}</td>
                                         <td className="text-white whitespace-nowrap px-6 py-4">{item.domain_name}</td>

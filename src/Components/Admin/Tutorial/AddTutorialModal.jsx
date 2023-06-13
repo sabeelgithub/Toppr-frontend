@@ -5,18 +5,25 @@ import { AddTutorial, getDomains } from "../../../Axios/Services/AdminServices";
 import { toast } from 'react-toastify';
 import { useFormik } from "formik";
 import { AddTutorialSchema } from "../../../Validations/Tutorial/AddTutorial";
+import { useSelector } from "react-redux";
 
 
 function AddTutorialModal({setAddModal,Refresh,setRefresh}) {
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
     const [Data,setData] = useState([])
+    
+    const token = useSelector(state=>state.AdminReducer.accessToken)
    
     useEffect(()=>{
         try{
             const fetchDomains = async()=>{
-                const response = await getDomains()
-                setData(response.payload)
+                const response = await getDomains(token)
+                if(response){
+                    setData(response.payload)
+
+                }
+                
             }
             fetchDomains()
 
@@ -27,13 +34,11 @@ function AddTutorialModal({setAddModal,Refresh,setRefresh}) {
     },[])
 
     const onSubmit = async()=>{
-     
-        console.log(values)
        
         try{
-            const response = await AddTutorial(values)
-            console.log(response)
-            if(response.status===200){
+            const response = await AddTutorial(token,values)
+            
+            if(response?.status===200){
                 setAddModal(false)
                 setRefresh(!Refresh)
                 toast.success(response.message)

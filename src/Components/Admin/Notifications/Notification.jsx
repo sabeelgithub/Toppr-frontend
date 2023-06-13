@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { getPendingExperts } from '../../../Axios/Services/AdminServices'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 function Notification() {
     const [Data,setData] = useState([])
 
+    const token = useSelector(state=>state.AdminReducer.accessToken)
+
     useEffect(()=>{
         try{
             const fetchPending = async ()=> {
-                const response = await getPendingExperts()
-                setData(response.payload)
+                const response = await getPendingExperts(token)
+                if(response){
+                    setData(response?.payload)
+
+                }
+                
             }
             fetchPending()
 
@@ -25,7 +32,7 @@ function Notification() {
     <h1 className='text-black text-center mb-5 font-bold'>Pending Experts</h1>
 
     <div className=" bg-black flex flex-col overflow-x-auto">
-    {Data.length === 0 ? <div className='bg-white text-center font-extrabold'>No Records</div> :
+    {Data?.length === 0 ? <div className='bg-white text-center font-extrabold'>No Records</div> :
         <div className="sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div className="overflow-x-auto">
@@ -43,7 +50,7 @@ function Notification() {
                             </tr>
                         </thead>
                         <tbody>
-                            {Data.length !== 0 && Data.map((item, index) => {
+                            {Data?.length !== 0 && Data?.map((item, index) => {
                                 return (<tr className="border-b dark:border-neutral-500">
                                     <td className="text-white whitespace-nowrap px-6 py-4 font-medium ">{index + 1}</td>
                                     <td className="text-white whitespace-nowrap px-6 py-4">{item.username}</td>

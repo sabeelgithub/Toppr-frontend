@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useFormik } from "formik";
 import { getTutorial } from "../../../Axios/Services/AdminServices";
 import { AddSubTutorialSchema } from "../../../Validations/Sub-Tutorial/AddSubTutorial";
+import { useSelector } from "react-redux";
 
 
 
@@ -14,19 +15,29 @@ function EditSubModal({setEditModal,Refresh,setRefresh,FindItem}) {
     const [open, setOpen] = useState(true)
     const [Domain,setDomain] = useState([])
     const [Tutorial,setTutorial] = useState([])
+
+    const token = useSelector(state=>state.AdminReducer.accessToken)
    
     useEffect(()=>{
         try{
             const fetchDomains = async()=>{
-                const response = await getDomains()
-                const domains = response?.payload?.filter((item)=>item.id !== FindItem.domain_id)
-                setDomain(domains)
+                const response = await getDomains(token)
+                if(response){
+                    const domains = response?.payload?.filter((item)=>item.id !== FindItem.domain_id)
+                    setDomain(domains)
+
+                }
+                
             }
             fetchDomains()
             const fetchTutorials = async()=>{
-                    const response = await getTutorial()
-                    const tutorials = response.payload.filter((item)=>item.id !== FindItem.tutorial_id)
-                    setTutorial(tutorials)
+                    const response = await getTutorial(token)
+                    if(response){
+                        const tutorials = response?.payload?.filter((item)=>item.id !== FindItem.tutorial_id)
+                        setTutorial(tutorials)
+
+                    }
+                    
                 }
             fetchTutorials()
     
@@ -40,9 +51,9 @@ function EditSubModal({setEditModal,Refresh,setRefresh,FindItem}) {
 
     const onSubmit = async()=>{       
         try{
-            const response = await EditSubTutorial(values)
+            const response = await EditSubTutorial(token,values)
             console.log(response)
-            if(response.status===200){
+            if(response?.status===200){
                 setEditModal(false)
                 setRefresh(!Refresh)
                 toast.success(response.message)
@@ -151,8 +162,8 @@ function EditSubModal({setEditModal,Refresh,setRefresh,FindItem}) {
 
 
                                             className="select w-full rounded-lg"  >
-                                              <option value={FindItem.tutorial_id}  selected >{FindItem.tutorial}</option>
-                                              {Tutorial.length !==0 && Tutorial.map((item)=>{
+                                              <option value={FindItem.tutorial_id}  selected >{FindItem?.tutorial}</option>
+                                              {Tutorial?.length !==0 && Tutorial?.map((item)=>{
                                                 return(
                                                     <option value={item.id} >{item.tutorial_name}</option>
                                                 )
@@ -177,7 +188,7 @@ function EditSubModal({setEditModal,Refresh,setRefresh,FindItem}) {
 
                                           className="select w-full rounded-lg"  >
                                             <option value={FindItem.domain_id}  selected >{FindItem.domain} </option>
-                                            {Domain.length !==0 && Domain.map((item)=>{
+                                            {Domain?.length !==0 && Domain?.map((item)=>{
                                               return(
                                                   <option value={item.id} >{item.domain_name}</option>
                                               )

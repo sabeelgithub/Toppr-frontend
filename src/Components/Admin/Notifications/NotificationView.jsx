@@ -4,6 +4,7 @@ import { RadioGroup } from '@headlessui/react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getSinglePendingExpert, handleAddExpertAndRejectExpert } from '../../../Axios/Services/AdminServices'
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux'
 
 
 
@@ -15,15 +16,18 @@ export default function NotificationView() {
 
 
     const { id } = useParams()
-
-
     const navigate = useNavigate()
+    const token = useSelector(state=>state.AdminReducer.accessToken) 
 
     useEffect(() => {
         try {
             const fetchSinglePending = async () => {
-                const response = await getSinglePendingExpert(id)
-                setData(response.payload)
+                const response = await getSinglePendingExpert(token,id)
+                if(response){
+                    setData(response.payload)
+
+                }
+                
             }
             fetchSinglePending()
 
@@ -35,11 +39,11 @@ export default function NotificationView() {
     }, [])
      
     
-    const addToExpert = async(id,type)=>{
+    const Verify = async(id,type)=>{
         const data = {
             type:type
         }
-        const response = await handleAddExpertAndRejectExpert(id,data)
+        const response = await handleAddExpertAndRejectExpert(token,id,data)
         console.log(response)
         if (response.status == 250){
             toast.success(response.message)
@@ -109,12 +113,12 @@ export default function NotificationView() {
 
 
                         className="mt-3 flex w-full items-center justify-center rounded-md border border-transparent bg-green-400 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        onClick={()=>addToExpert(Data.id,'add')} >
+                        onClick={()=>Verify(Data.id,'add')} >
                         Add to Expets
                     </button>
                     <button
                         type="submit"
-                        onClick={()=>addToExpert(Data.id,'delete')}
+                        onClick={()=>Verify(Data.id,'delete')}
                         className="mt-3 flex w-full items-center justify-center rounded-md border border-transparent bg-red-500 px-8 py-3 text-base font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         Reject

@@ -22,18 +22,19 @@ function LoginForm() {
   const onSubmit = async ()=>{
     try{
       const response = await Login(values)
+      console.log(response)
       if (response.status===200){
         toast.success(response.message) 
         if (response.person==='client'){
-          dispatch(ClientLogin({token:response.refresh,client:{username:response.username,person:response.person}}))
+          dispatch(ClientLogin({refreshToken:response.refresh,accessToken:response.access,client:{username:response.username,person:response.person}}))
           navigate('/')
 
         } else if (response.person==='expert'){
-          dispatch(ExpertLogin({token:response.refresh,expert:{username:response.username,person:response.person}}))
+          dispatch(ExpertLogin({refreshToken:response.refresh,accessToken:response.access,expert:{username:response.username,person:response.person}}))
            
 
         } else if(response.person==='admin'){
-          dispatch(AdminLogin({token:response.refresh,admin:{username:response.username,person:response.person}}))
+          dispatch(AdminLogin({refreshToken:response.refresh,accessToken:response.access,admin:{username:response.username,person:response.person}}))
           navigate('/admin/dashboard')
         }
 
@@ -105,7 +106,7 @@ function LoginForm() {
           Don’t have an account yet? <Link to='/register' href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
         </p>
            
-            <a href="#" className="text-sm font-medium text-red-600 hover:underline dark:text-primary-500">Forgot password?</a>
+            <a href="#" className="text-sm font-medium text-white hover:underline dark:text-primary-500">Forgot password?</a>
           </div>
         </form>
       </div>

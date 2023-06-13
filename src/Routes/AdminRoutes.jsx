@@ -10,10 +10,11 @@ import TutorialListPage from '../Pages/Admin/TutorialListPage'
 import SubTutorialPage from '../Pages/Admin/SubTutorialPage'
 import { useSelector } from 'react-redux'
 import Login from '../Pages/Login'
+import DomainPurchaseListPage from '../Pages/Admin/DomainPurchaseListPage'
 
 
 function AdminRoutes() {
-  const isAuth = useSelector(state=>state.AdminReducer.token)
+  const isAuth = useSelector(state=>state.AdminReducer.accessToken)
  
  
   return (
@@ -29,6 +30,7 @@ function AdminRoutes() {
           <Route path="/domains" element={ isAuth ? <DomainListPage/> : <Navigate to="/login"/>} />
           <Route path="/tutorials" element={ isAuth ? <TutorialListPage/> : <Navigate to="/login"/>} />
           <Route path="/sub-tutorials" element={ isAuth ? <SubTutorialPage/> : <Navigate to="/login"/>} />
+          <Route path="/domain-purchase" element={ isAuth ? <DomainPurchaseListPage/> : <Navigate to="/login"/>} />
       </Routes> 
     </>
   )

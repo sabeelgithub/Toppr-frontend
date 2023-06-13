@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 
 
 function SignupForm() {
-  const [Domain,setDomain] = useState([])
+  const [Domain, setDomain] = useState([])
 
   const [RegisterPerson, setRegisterPerson] = useState('client')
 
@@ -19,9 +19,9 @@ function SignupForm() {
 
   const navigate = useNavigate()
 
-  useEffect(()=>{
-    try{
-      const fetchDomain = async ()=>{
+  useEffect(() => {
+    try {
+      const fetchDomain = async () => {
         const response = await getDomains()
         setDomain(response.payload)
 
@@ -29,59 +29,59 @@ function SignupForm() {
       fetchDomain()
 
     }
-    catch (error){
+    catch (error) {
       console.log(error)
     }
-  },[])
- 
+  }, [])
+
 
   const onSubmit = async () => {
 
     const form = new FormData()
-    form.append('phone',values.phone)
-    form.append('email',values.email)
-    form.append('username',values.username)
-    form.append('password',values.password)
-    form.append('confirmPassword',values.confirmPassword)
-    form.append('person',RegisterPerson)
-    if (RegisterPerson==='expert'){
-      form.append('profile_poto',values.profile_poto)
-      form.append('certificate',values.certificate)
-      form.append('domain',refDomain.current.value)
-    } 
-    
-   
+    form.append('phone', values.phone)
+    form.append('email', values.email)
+    form.append('username', values.username)
+    form.append('password', values.password)
+    form.append('confirmPassword', values.confirmPassword)
+    form.append('person', RegisterPerson)
+    if (RegisterPerson === 'expert') {
+      form.append('profile_poto', values.profile_poto)
+      form.append('certificate', values.certificate)
+      form.append('domain', refDomain.current.value)
+    }
+
+
     // form.forEach((value, key) => {
     //   console.log(value,key)
     // });
 
-   
+
     try {
       if (RegisterPerson === 'expert') {
-        
+
         const response = await Register(form)
         if (response.status === 200) {
           toast.success('success you can login')
-           navigate('/login')
-        } else if (response.error?.email && response.error.email[0]==="user with this email address already exists.") {
-          toast.error('This Email is Already Registered')  
-        } else if (response.error?.phone && response.error.phone[0]==="user with this phone already exists."){
+          navigate('/login')
+        } else if (response.error?.email && response.error.email[0] === "user with this email address already exists.") {
+          toast.error('This Email is Already Registered')
+        } else if (response.error?.phone && response.error.phone[0] === "user with this phone already exists.") {
           toast.error('This Mobile is Already Registered')
-        }  else {
+        } else {
           toast.error('Something went wrong!')
         }
-        
+
       } else {
-        
+
         const response = await Register(form)
         if (response.status === 200) {
           toast.success('success you can login')
-           navigate('/login')
-        } else if (response.error?.email && response.error.email[0]==="user with this email address already exists.") {
-          toast.error('This Email is Already Registered')     
-        } else if (response.error?.phone && response.error.phone[0]==="user with this phone already exists."){
+          navigate('/login')
+        } else if (response.error?.email && response.error.email[0] === "user with this email address already exists.") {
+          toast.error('This Email is Already Registered')
+        } else if (response.error?.phone && response.error.phone[0] === "user with this phone already exists.") {
           toast.error('This Mobile is Already Registered')
-        }  else {
+        } else {
           toast.error('Something went wrong!')
         }
 
@@ -102,9 +102,9 @@ function SignupForm() {
         username: "",
         password: "",
         confirmPassword: "",
-        profile_poto:"",
+        profile_poto: "",
         certificate: "",
-     
+
       },
       validationSchema: registrationSchema,
       onSubmit,
@@ -132,14 +132,15 @@ function SignupForm() {
               Register Expert
             </Link>
           </div>
-          <h1 className='text-center mt-2 md:font-medium text-rose-800'>Register as {RegisterPerson}</h1>
+          <h1 className='text-center mt-2 md:font-medium text-white'>Register as {RegisterPerson}</h1>
 
 
 
           <form className="space-y-4" onSubmit={handleSubmit} encType="multipart/form-data">
 
 
-            <div>
+            <div className='md:flex flex-wrap justify-between'>
+            <div className='md:w-1/2 w-full'>
               <label htmlFor="mobile" className="block mb-2 text-sm font-medium text-white">
                 Your Mobile
               </label>
@@ -150,7 +151,7 @@ function SignupForm() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 id="email"
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="md:w-[29rem] w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Enter your mobile number"
 
               />
@@ -159,9 +160,30 @@ function SignupForm() {
               )}
             </div>
 
+            <div className='md:w-1/2 w-full'>
+            <label htmlFor="mobile" className="block mb-2 text-sm font-medium text-white">
+              Username
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={values.username}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              id="username"
+              className="md:w-[30rem] w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Enter your username"
+            // required
+            />
+            {errors.username && touched.username && (
+              <p className="text-red-600">{errors.username}</p>
+            )}
+          </div>
+            </div>
 
 
-            <div>
+
+            <div className=''>
               <label htmlFor="mobile" className="block mb-2 text-sm font-medium text-white">
                 Your Email
               </label>
@@ -184,56 +206,44 @@ function SignupForm() {
 
 
 
-            <div>
-              <label htmlFor="mobile" className="block mb-2 text-sm font-medium text-white">
-                Username
-              </label>
-              <input
-                type="text"
-                name="username"
-                value={values.username}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="username"
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Enter your username"
-              // required
-              />
-              {errors.username && touched.username && (
-                <p className="text-red-600">{errors.username}</p>
-              )}
-            </div>
+           
             {RegisterPerson === 'expert' ? <div className='md:flex justify-between flex-wrap' >
 
 
-              <div className='mb-10'>
-                <select 
-                ref={refDomain} className="select w-full rounded-lg" required >
+              <div className='mt-6'>
+                <select
+                  ref={refDomain} className="select w-full rounded-lg" required >
                   <option value='' selected>Choose Domain</option>
-                  {Domain.length !==0 && Domain.map((item)=>{
+                  {Domain.length !== 0 && Domain.map((item) => {
                     return (
                       <option value={item.id} >{item.domain_name}</option>
 
                     )
                   })}
-                 
+
                 </select>
               </div>
 
               <div className='mt-5 md:mt-0'>
+              <label htmlFor='profile_poto' className='text-white text-sm'> Upload Profile photo
+              <input name="profile_poto" required
+              id="profile_poto" accept='image/*' onChange={(evt) => setFieldValue('profile_poto', evt.target.files[0])} className="block  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mt-2" aria-describedby="user_avatar_help" type="file" />
+              </label>
 
-                <input name="profile_poto" required 
-                  id="profile_poto" accept='image/*'  onChange={(evt)=>setFieldValue('profile_poto',evt.target.files[0])} className="block  text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" type="file" />
+               
 
               </div>
               <div className='mt-5 md:mt-0'>
-
-                <input name='certificate' id="cerertificate"  accept='image/*'  onChange={(evt)=>setFieldValue('certificate',evt.target.files[0])}   required className="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" type="file" />
-
+                <label htmlFor="certificate" className='text-white text-sm'>Upload Certificate
+                  <input name='certificate' id="certificate" accept='image/*' onChange={(evt) => setFieldValue('certificate', evt.target.files[0])} required className="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mt-2" aria-describedby="user_avatar_help" type="file" />
+                </label>
               </div>
+
             </div> : ''}
 
-            <div>
+
+            <div className='md:flex flex-wrap justify-between'>
+            <div className='md:w-1/2 w-full'>
               <label htmlFor="password" className="block mb-2 text-sm font-medium text-white">
                 Password
               </label>
@@ -246,7 +256,7 @@ function SignupForm() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 id="password"
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="md:w-[29rem] w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="••••••••"
 
               />
@@ -254,7 +264,7 @@ function SignupForm() {
                 <p className="text-red-600">{errors.password}</p>
               )}
             </div>
-            <div>
+            <div className='md:w-1/2 w-full'>
               <label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium text-white">
                 Confirm Password
               </label>
@@ -265,7 +275,7 @@ function SignupForm() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 id="confirmPassword"
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="md:w-[30rem] w-full bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="••••••••"
 
               />
@@ -273,6 +283,10 @@ function SignupForm() {
                 <p className="text-red-600">{errors.confirmPassword}</p>
               )}
             </div>
+
+            </div>
+
+            
 
             <button
               type="submit"

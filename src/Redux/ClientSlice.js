@@ -3,19 +3,24 @@ import { createSlice } from "@reduxjs/toolkit";
 const ClientSlice = createSlice({
     name:'client',
     initialState:{
-        token:null,
-        client:null
+        refreshToken:null,
+        accessToken:null,
+        client:null,
+        purchased_domains:null
     },
     reducers:{
         ClientLogin:(state,action)=>{
-            state.token = action.payload.token
+            state.refreshToken = action.payload.refreshToken
+            state.accessToken = action.payload.accessToken
             state.client= action.payload.client
+            state.purchased_domains = action.payload.purchased_domains
         },
         ClientLogout:((state,action)=>{
-            state.token = null
+            state.refreshToken =  null
+            state.accessToken = null
             state.client= null
+            state.purchased_domains=null
            
-
         })
 
     }

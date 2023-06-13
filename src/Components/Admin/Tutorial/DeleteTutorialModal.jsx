@@ -3,17 +3,19 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { toast } from 'react-toastify';
 import { DeleteTutorials } from "../../../Axios/Services/AdminServices";
+import { useSelector } from "react-redux";
 
 
 function DeleteTutorialModal({setDeleteModal,FindItem,Refresh,setRefresh}) {
 
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
+    
+    const token = useSelector(state=>state.AdminReducer.accessToken)
 
     const DeleteTutorial = async(id)=>{
-        const response = await DeleteTutorials(id)
-        console.log(response)
-        if (response.status === 200){
+        const response = await DeleteTutorials(token,id)
+        if (response?.status === 200){
             setRefresh(!Refresh)
             toast.success(response.message)
 
@@ -66,7 +68,7 @@ function DeleteTutorialModal({setDeleteModal,FindItem,Refresh,setRefresh}) {
                                             </button>
                                             <div class="p-6 text-center">
                                                 <svg aria-hidden="true" class="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete {FindItem.tutorial_name}? </h3>
+                                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete {FindItem?.tutorial_name}? </h3>
                                                 <button  onClick={()=>{
                                                     DeleteTutorial(FindItem.id)
                                                     setDeleteModal(false)
