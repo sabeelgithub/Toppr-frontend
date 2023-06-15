@@ -59,7 +59,7 @@ function Notification() {
                                     <td className="text-white whitespace-nowrap px-6 py-4">{item.domain}</td>
                                    
                                     <td className="text-white whitespace-nowrap px-6 py-4">
-                                    <Link to={`/admin/notification-view/${item.id}`} className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">   View 
+                                    <Link to={`/admin/notification-view/${item.user_id}`} className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">   View 
                                     </Link>
                                        
                                     </td>

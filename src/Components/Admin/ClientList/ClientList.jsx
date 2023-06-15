@@ -28,14 +28,12 @@ function ClientList() {
   // blocking mechanism
   async function StatusChange(id, status) {
     try {
-      console.log(id, status)
       const data = {
         id: id,
         status: status
       }
       const response = await handleClientStatus(token,data)
       setRefresh(!Refresh)
-      console.log(response)
     }
     catch (error) {
       console.log(error)

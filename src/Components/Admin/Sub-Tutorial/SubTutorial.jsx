@@ -38,7 +38,6 @@ function SubTutorial() {
   const FetchingMatch = (id)=>{
     const selectedItem = Data?.find((item)=>item.id === id)
     setFindItem(selectedItem)
-    console.log(selectedItem)
     } 
 
   return (

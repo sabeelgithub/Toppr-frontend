@@ -30,7 +30,7 @@ export default function Experts() {
           <img className='w-60 h-60 object-cover rounded-2xl'  src={`http://127.0.0.1:8000/${item.profile_poto}`}  alt="profile_poto" />
         </div>
         <div className='w-60'>
-          <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">{item.username}</h5>
+          <h5 className="mt-2 text-center mb-1 text-xl font-medium uppercase text-white dark:text-white">{item.username}</h5>
           <p className="text-center text-sm text-gray-500 dark:text-gray-400">{item.domain}</p> 
         </div>
       </div>

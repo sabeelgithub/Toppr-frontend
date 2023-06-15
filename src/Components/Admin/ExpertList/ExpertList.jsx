@@ -12,7 +12,6 @@ function ExpertList() {
         try {
             const fetchExperts = async () => {
                 const response = await getExpertsList(token)
-                console.log(response)
                 setData(response?.payload)
                 
             }
@@ -27,13 +26,11 @@ function ExpertList() {
     // blocking mechanism
     async function StatusChange(id, status) {
         try {
-            console.log(id, status)
             const data = {
                 id: id,
                 status: status
             }
             const response = await handleExpertStatus(token,data)
-            console.log(response)
             setRefresh(!Refresh)
         }
         catch (error) {
@@ -73,12 +70,12 @@ function ExpertList() {
                                                 {item.status ? <td className="text-white whitespace-nowrap px-6 py-4">blocked</td> : <td className="text-white whitespace-nowrap px-6 py-4">Not blocked</td>}
                                                 {item.status ? <td className="text-white whitespace-nowrap px-6 py-4">
                                                     <button onClick={() => {
-                                                        StatusChange(item.id, item.status)
+                                                        StatusChange(item.user_id, item.status)
 
                                                     }} className='bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded'>Unblock</button>
                                                 </td> : <td className="text-white whitespace-nowrap px-6 py-4">
                                                     <button onClick={() => {
-                                                        StatusChange(item.id, item.status)
+                                                        StatusChange(item.user_id, item.status)
 
                                                     }} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>Block</button>
                                                 </td>}

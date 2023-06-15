@@ -22,7 +22,6 @@ function Domains() {
         try{
             const fetchDomains = async()=>{
                 const response = await getDomains(token)
-                console.log(response)
                 if(response){
                     setData(response?.payload)
 

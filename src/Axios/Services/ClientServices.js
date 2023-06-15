@@ -81,3 +81,30 @@ export const getSingleDomain = async (token,domain_name)=>{
 }
 
 
+// get experts to perticular domain
+
+export const getExpertsToPerticularDomain = async(token,domain_name)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json",
+                Authorization: `Bearer ${token}`,
+    
+            },
+            params: {
+                domain_name: domain_name,
+            },
+        }
+        const response = await axiosClientInstance.get('client/domain-experts/',config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+
+}
+
+
+
+

@@ -6,10 +6,11 @@ import { toast } from 'react-toastify';
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { button } from "@material-tailwind/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import jwt from 'jwt-decode'
 import { domain_purchase, getSubTutorials, getTutorials } from "../../../Axios/Services/ClientServices";
 import DomainSuccessModal from "./DomainSuccessModal";
+import { ClientLogin, DomainAdd } from "../../../Redux/ClientSlice";
 
 
 
@@ -24,8 +25,15 @@ function DomainModal({ setShowDomainModal, FindItem ,setShowDomainSuccessModal})
 
     
     const token = useSelector(state=>state.ClientReducer.accessToken)
-
+    
     const user = jwt(token)
+    
+    const dispatch = useDispatch()
+    
+    
+    
+
+
 
     
  
@@ -68,7 +76,6 @@ function DomainModal({ setShowDomainModal, FindItem ,setShowDomainSuccessModal})
     },[])
 
     const domain_order = async(order_id)=>{
-        console.log(order_id,'ivde ethikn')
         const data={
             order_id:order_id,
             domain:FindItem.id,
@@ -77,11 +84,12 @@ function DomainModal({ setShowDomainModal, FindItem ,setShowDomainSuccessModal})
             user : user.user_id
         }
         const response = await domain_purchase(token,data)
-        console.log(response,'chek it')
         if (response){
             if (response?.status===200){
                 setShowDomainModal(false)
                 setShowDomainSuccessModal(true)
+                dispatch(DomainAdd({purchased_domains:{domain_id:FindItem.id}}))
+
 
             } else {
                 toast.error('something went wrong')

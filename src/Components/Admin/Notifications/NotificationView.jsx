@@ -41,14 +41,16 @@ export default function NotificationView() {
     
     const Verify = async(id,type)=>{
         const data = {
-            type:type
+            type:type,
+            expert:Data?.id,
+            domain:Data?.domain_id
         }
         const response = await handleAddExpertAndRejectExpert(token,id,data)
         console.log(response)
-        if (response.status == 250){
+        if (response?.status == 250){
             toast.success(response.message)
             navigate('/admin/experts')
-        } else if (response.status == 500){
+        } else if (response?.status == 500){
             toast.success(response.message)
             navigate('/admin/notifications')
         } else {
@@ -113,12 +115,12 @@ export default function NotificationView() {
 
 
                         className="mt-3 flex w-full items-center justify-center rounded-md border border-transparent bg-green-400 px-8 py-3 text-base font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                        onClick={()=>Verify(Data.id,'add')} >
+                        onClick={()=>Verify(Data.user_id,'add')} >
                         Add to Expets
                     </button>
                     <button
                         type="submit"
-                        onClick={()=>Verify(Data.id,'delete')}
+                        onClick={()=>Verify(Data.user_id,'delete')}
                         className="mt-3 flex w-full items-center justify-center rounded-md border border-transparent bg-red-500 px-8 py-3 text-base font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         Reject

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './LoginForm.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
@@ -17,17 +17,22 @@ function LoginForm() {
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
+  
+  
 
 
   const onSubmit = async ()=>{
     try{
       const response = await Login(values)
-      console.log(response)
       if (response.status===200){
-        toast.success(response.message) 
+        toast.success(response.message)
+       
         if (response.person==='client'){
           dispatch(ClientLogin({refreshToken:response.refresh,accessToken:response.access,client:{username:response.username,person:response.person}}))
           navigate('/')
+          if (response?.domains){
+            dispatch(ClientLogin({refreshToken:response.refresh,accessToken:response.access,purchased_domains:response.domains,client:{username:response.username,person:response.person}}))
+          } 
 
         } else if (response.person==='expert'){
           dispatch(ExpertLogin({refreshToken:response.refresh,accessToken:response.access,expert:{username:response.username,person:response.person}}))

@@ -15,16 +15,25 @@ const ClientSlice = createSlice({
             state.client= action.payload.client
             state.purchased_domains = action.payload.purchased_domains
         },
-        ClientLogout:((state,action)=>{
+        DomainAdd:(state,action)=>{
+           if (state.purchased_domains ){
+            state.purchased_domains.push(action.payload.purchased_domains)
+           }
+           else{
+            state.purchased_domains=[action.payload.purchased_domains]
+           }
+           
+        },
+        ClientLogout:(state,action)=>{
             state.refreshToken =  null
             state.accessToken = null
             state.client= null
             state.purchased_domains=null
            
-        })
+        }
 
     }
 })
-export const {ClientLogin,ClientLogout} = ClientSlice.actions
+export const {ClientLogin,ClientLogout,DomainAdd} = ClientSlice.actions
 export default  ClientSlice.reducer
 

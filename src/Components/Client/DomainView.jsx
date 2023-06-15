@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import dummyprofile from '../../Assets/profile4.jpg'
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getSingleDomain, getSubTutorials, getTutorials } from '../../Axios/Services/ClientServices';
+import { getExpertsToPerticularDomain, getSingleDomain, getSubTutorials, getTutorials } from '../../Axios/Services/ClientServices';
 
 function DomainView({setTitle}) {
   const [isOpen, setIsOpen] = useState('');
@@ -10,6 +10,8 @@ function DomainView({setTitle}) {
   const [Tutorials, setTutorials] = useState([])
   const [SubTutorials, setSubTutorials] = useState([])
   const [Content,setContent] = useState([])
+  const [Experts,setExperts] = useState([])
+  const [Rating,setRating] = useState([])
 
   const [color,setColor] = useState('')
 
@@ -36,12 +38,8 @@ function DomainView({setTitle}) {
       const response = await getTutorials(token)
       if (response) {
         const filter = response?.payload?.filter((item) => item.domain_id === domain?.id)
-        setTutorials(filter)
-
-        
-
+        setTutorials(filter)  
       }
-
     }
     fetchTutorials()
 
@@ -52,12 +50,21 @@ function DomainView({setTitle}) {
         setSubTutorials(filter)
         setContent(filter)
         setIsOpen(filter[0]?.tutorial_id)
-        setColor(filter[0]?.id)
-       
-        
+        setColor(filter[0]?.id) 
       }
     }
     fetchSubTutorials()
+
+    const experts = async()=>{
+      const response = await getExpertsToPerticularDomain(token, domain_name)
+      if(response){
+        setExperts(response?.payload)
+        setRating(response?.rating)
+      }
+    }
+    experts()
+
+
 
 
   }, [])
@@ -130,13 +137,9 @@ function DomainView({setTitle}) {
           <p className='text-black font-serif text-md leading-6 text-start '>
           {Content[0]?.description}
           Regression analysis is another essential statistical technique. It examines the relationship between one dependent variable and one or more independent variables. Regression models help in understanding how changes in independent variables impact the dependent variable. This is useful for prediction, forecasting, and understanding causal relationships.
-
           Statistical inference and modeling often rely on probability theory. Probability is the measure of the likelihood of an event occurring. It provides a framework for quantifying uncertainty and making decisions in the presence of variability. Probability distributions, such as the normal distribution, binomial distribution, and exponential distribution, are used to model and analyze random variables.
-
           Data visualization is an integral part of statistics. Visual representations of data through charts, graphs, histograms, and scatter plots facilitate the exploration and understanding of patterns and relationships. Data visualization enhances the communication of statistical findings and helps in presenting complex information in a visually appealing and accessible manner.
-
           With the advent of technology, statistical analysis has become more efficient and accessible. Statistical software packages, such as R, Python (with libraries like NumPy, pandas, and matplotlib), and SPSS, provide powerful tools for data manipulation, analysis, and visualization. These tools have democratized the field of statistics, making it easier for researchers, analysts, and decision-makers to apply statistical techniques to their data.
-
           Statistics also plays a vital role in decision-making and policy formulation. It enables organizations to make evidence-based decisions, assess risks, evaluate interventions, and optimize processes. In fields like healthcare, statistics is crucial for clinical trials, epidemiological studies, and public health interventions. In finance and economics, statistics is used for risk analysis, portfolio management, and forecasting.
           
           </p>
@@ -147,47 +150,84 @@ function DomainView({setTitle}) {
       </div>
       <div className=' h-full w-full bg-black'>
         <div className='bg-black'>
-          <h1 className='text-white text-center font-extrabold text-3xl'>Clarify your doubts with industrial experts</h1>
+          {Experts.length !==0 ? <h1 className='text-white text-center font-extrabold text-3xl'>Clarify your doubts with industrial experts</h1> : <h1 className='text-white text-center font-extrabold text-3xl'>Currently we are looking for experts to this Domain</h1> }
+          
         </div>
 
         <div className='h-full w-full mt-9 bg-black flex justify-around flex-wrap' >
+          { Experts?.length !==0 ? Experts?.map((item)=>{
+            return (
 
+              <div className='m-6' >
+              <div className='w-60 h-60 '>
+                <img className='w-60 h-60 object-cover rounded-2xl' src={`http://127.0.0.1:8000/${item.profile_poto}`}  alt="profile_poto" />
+              </div>
+              <div className='w-60'>
+                <h5 className="mt-2 text-center mb-1 text-xl font-medium uppercase text-white dark:text-white">{item.username}</h5>
+                <p className="text-center text-sm text-gray-500 dark:text-gray-400">{item.domain}</p>
+                  
+
+                <div className="mx-20 mt-1 mr-4 w-28 flex  items-center">
+                  { Rating?.length !== 0 && Rating?.filter((rat)=>rat.expert_id === item.id)?.map((val)=>{
+                    let star = [];
+                    for (let i = 1; i <= val.count; i++) {
+                    star.push(<svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fourth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)
+                    }
+                    console.log(star,'cfhg')
+                    return star;
+                  })}
+                  </div>
+              
+          
+            
+                
+
+
+              </div>
+            </div>
+
+            )
+          }) : <div className='flex justify-around flex-wrap'> 
           <div className='m-6' >
-            <div className='w-60 h-60 '>
-              <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
-            </div>
-            <div className='w-60'>
-              <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">Data Sciene</p>
-            </div>
+          <div className='w-60 h-60 '>
+            <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
           </div>
-          <div className='m-6' >
-            <div className='w-60 h-60 '>
-              <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
-            </div>
-            <div className='w-60'>
-              <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">Data Sciene</p>
-            </div>
+          <div className='w-60'>
+            <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">Data Sciene</p>
           </div>
-          <div className='m-6' >
-            <div className='w-60 h-60 '>
-              <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
-            </div>
-            <div className='w-60'>
-              <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">Data Sciene</p>
-            </div>
+        </div>
+        <div className='m-6' >
+          <div className='w-60 h-60 '>
+            <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
           </div>
-          <div className='m-6' >
-            <div className='w-60 h-60 '>
-              <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
-            </div>
-            <div className='w-60'>
-              <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>
-              <p className="text-center text-sm text-gray-500 dark:text-gray-400">Data Sciene</p>
-            </div>
+          <div className='w-60'>
+            <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">Data Sciene</p>
           </div>
+        </div>
+        <div className='m-6' >
+          <div className='w-60 h-60 '>
+            <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
+          </div>
+          <div className='w-60'>
+            <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">Data Sciene</p>
+          </div>
+        </div>
+        <div className='m-6' >
+          <div className='w-60 h-60 '>
+            <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
+          </div>
+          <div className='w-60'>
+            <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">Data Sciene</p>
+          </div>
+        </div>
+          </div> }
+          
+
+         
         </div>
       </div>
     </>

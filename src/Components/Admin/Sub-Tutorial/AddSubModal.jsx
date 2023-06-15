@@ -43,7 +43,6 @@ function AddSubModal({setAddModal,Refresh,setRefresh}) {
     const onSubmit = async()=>{ 
         try{
             const response = await AddSubTutorial(token,values)
-            console.log(response)
             if(response?.status===200){
                 setAddModal(false)
                 setRefresh(!Refresh)
