@@ -1,12 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import {
-//   Card,
-//   CardHeader,
-//   CardBody,
-//   CardFooter,
-//   Typography,
-//   Button
-// } from "@material-tailwind/react";
 import Mathspoto from '../../../Assets/Mahematics.avif'
 import Biopoto from '../../../Assets/Biology.jpg'
 import Statipoto from '../../../Assets/statistics.jpg'
@@ -91,7 +83,6 @@ export default function Dark() {
                     <button onClick={()=>{
                       if(token){
                         fetch(item.id)
-                        // setShowDomainModal(!ShowDomainModal)
                         navigate(`/domain/${item.domain_name}`)
                       } else {
                         toast.warning('Login Required')

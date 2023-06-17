@@ -8,6 +8,7 @@ import ExpertsPage from '../Pages/ExpertsPage';
 import { useSelector } from 'react-redux';
 import DashboradPage from '../Pages/Admin/DashboradPage';
 import DomainViewPage from '../Pages/Client/DomainViewPage';
+import SingleExpertProfilePage from '../Pages/Client/SingleExpertProfilePage';
 
 
 
@@ -31,6 +32,7 @@ function ClientRoutes() {
             <Route path="/login" element={isCAuth ? <Home/> : (isAuth ? <DashboradPage/> : <Login/>)} />
             <Route path="/register" element={isCAuth ? <Home/> : (isAuth ? <DashboradPage/> : <Signup/>)} />
             <Route path="/domain/:domain_name" element={isCAuth ? <DomainViewPage/> : <Navigate to="/login"/> } />
+            <Route path="/single-expert/:id" element={isCAuth ? <SingleExpertProfilePage/> : <Navigate to="/login"/> } />
 
         </Routes>
         

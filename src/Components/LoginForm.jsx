@@ -26,13 +26,14 @@ function LoginForm() {
       const response = await Login(values)
       if (response.status===200){
         toast.success(response.message)
-       
         if (response.person==='client'){
           dispatch(ClientLogin({refreshToken:response.refresh,accessToken:response.access,client:{username:response.username,person:response.person}}))
           navigate('/')
-          if (response?.domains){
+          if (response?.domains && response?.subscribed ){
+            dispatch(ClientLogin({refreshToken:response.refresh,accessToken:response.access,purchased_domains:response.domains,subscription:response.subscribed,client:{username:response.username,person:response.person}}))
+          } else if(response?.domains){
             dispatch(ClientLogin({refreshToken:response.refresh,accessToken:response.access,purchased_domains:response.domains,client:{username:response.username,person:response.person}}))
-          } 
+          }
 
         } else if (response.person==='expert'){
           dispatch(ExpertLogin({refreshToken:response.refresh,accessToken:response.access,expert:{username:response.username,person:response.person}}))

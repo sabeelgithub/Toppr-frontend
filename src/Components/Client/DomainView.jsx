@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import dummyprofile from '../../Assets/profile4.jpg'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getExpertsToPerticularDomain, getSingleDomain, getSubTutorials, getTutorials } from '../../Axios/Services/ClientServices';
 
@@ -20,6 +20,7 @@ function DomainView({setTitle}) {
 
   const { domain_name } = useParams()
   setTitle(domain_name)
+  const navigate = useNavigate()
 
   useEffect(() => {
 
@@ -92,6 +93,11 @@ function DomainView({setTitle}) {
 
   }
 
+  const imageView = (id)=>{
+    navigate(`/single-expert/${id}`)
+    
+  }
+
 
 
   return (
@@ -160,7 +166,9 @@ function DomainView({setTitle}) {
 
               <div className='m-6' >
               <div className='w-60 h-60 '>
-                <img className='w-60 h-60 object-cover rounded-2xl' src={`http://127.0.0.1:8000/${item.profile_poto}`}  alt="profile_poto" />
+                <img onClick={()=>{
+                  imageView(item.id)
+                }} className='w-60 h-60 object-cover rounded-2xl' src={`http://127.0.0.1:8000/${item.profile_poto}`}  alt="profile_poto" />
               </div>
               <div className='w-60'>
                 <h5 className="mt-2 text-center mb-1 text-xl font-medium uppercase text-white dark:text-white">{item.username}</h5>
@@ -173,7 +181,7 @@ function DomainView({setTitle}) {
                     for (let i = 1; i <= val.count; i++) {
                     star.push(<svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fourth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)
                     }
-                    console.log(star,'cfhg')
+                  
                     return star;
                   })}
                   </div>
@@ -199,7 +207,7 @@ function DomainView({setTitle}) {
         </div>
         <div className='m-6' >
           <div className='w-60 h-60 '>
-            <img className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
+            <img  className='w-60 h-60 object-cover rounded-2xl' src={dummyprofile} alt="profile_poto" />
           </div>
           <div className='w-60'>
             <h5 className="mt-2 text-center mb-1 text-xl font-medium text-white dark:text-white">Sabeel</h5>

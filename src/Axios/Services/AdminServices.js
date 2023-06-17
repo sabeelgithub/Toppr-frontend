@@ -371,6 +371,26 @@ export const EditSubTutorial = async (token,data) => {
     }
 }
 
+// get rating of experts
+
+export const getRating = async (token) => {
+    try {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const response = await axiosAdminInstance.get('rating/',config)
+        return response.data
+
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
+
+
 
 // get orders
 
@@ -390,3 +410,24 @@ export const getOrders = async (token) => {
         console.log(error.message)
     }
 }
+
+// get subscriptions
+
+export const getSubscription = async (token) => {
+    try {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const response = await axiosAdminInstance.get('subscriptions/',config)
+        return response.data
+
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
+
+

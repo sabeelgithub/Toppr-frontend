@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { getOrders } from '../../../Axios/Services/AdminServices'
+import {getRating } from '../../../Axios/Services/AdminServices'
 import { useSelector } from 'react-redux'
 
-function DomainPurchase() {
+function Rating() {
     const [Data,setData] = useState([])
 
     const token = useSelector(state=>state.AdminReducer.accessToken)
 
     useEffect(()=>{
         try{
-            const fetchOrders = async ()=>{
-                const response = await getOrders(token)
+            const fetchRating = async ()=>{
+                const response = await getRating(token)
                 if(response){
-                    setData(response.payload)
+                    setData(response?.payload)
                 }
             }
-            fetchOrders()
+            fetchRating()
 
         }
         catch(error){
@@ -36,24 +36,28 @@ function DomainPurchase() {
                             <thead className="border-b font-medium dark:border-neutral-500">
                                 <tr>
                                     <th scope="col" className="text-yellow-400 px-6 py-4">S no</th>
-                                    <th scope="col" className="text-yellow-400 px-6 py-4">Order Id</th>
+                                    
+                                    <th scope="col" className="text-yellow-400 px-6 py-4">Expert name</th>
                                     <th scope="col" className="text-yellow-400 px-6 py-4">Domain name</th>
-                                    <th scope="col" className="text-yellow-400 px-6 py-4">Price</th>
-                                    <th scope="col" className="text-yellow-400 px-6 py-4">Client</th>
-                                    <th scope="col" className="text-yellow-400 px-6 py-4">Purchased On</th>
+
+                                    <th scope="col" className="text-yellow-400 px-6 py-4">Rating</th>
                                  
 
                                 </tr>
                             </thead>
                             <tbody>
                                 {Data?.length !== 0 && Data?.map((item, index) => {
+                                    let star = [];
+                                    for (let i = 1; i <= item.count; i++) {
+                                    star.push(<svg aria-hidden="true" className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fourth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)
+                                    }
                                     return (<tr className="border-b dark:border-neutral-500">
                                         <td className="text-white whitespace-nowrap px-6 py-4 font-medium ">{index + 1}</td>
-                                        <td className="text-white whitespace-nowrap px-6 py-4">{item.order_id}</td>
+                                        <td className="text-white whitespace-nowrap px-6 py-4">{item.expert_name}</td>
                                         <td className="text-white whitespace-nowrap px-6 py-4">{item.domain_name}</td>
-                                        <td className="text-white whitespace-nowrap px-6 py-4">₹ {item.price}</td>
-                                        <td className="text-white whitespace-nowrap px-6 py-4">{item.user_name}</td>
-                                        <td className="text-white whitespace-nowrap px-6 py-4">{item.created_at}</td>
+                                        <td className="text-white whitespace-nowrap px-6 py-4 flex">{star}</td>
+                                       
+
                                        
                                     </tr>
 
@@ -70,4 +74,4 @@ function DomainPurchase() {
   )
 }
 
-export default DomainPurchase
+export default Rating

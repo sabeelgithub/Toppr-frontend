@@ -6,7 +6,8 @@ const ClientSlice = createSlice({
         refreshToken:null,
         accessToken:null,
         client:null,
-        purchased_domains:null
+        purchased_domains:null,
+        subscription:null
     },
     reducers:{
         ClientLogin:(state,action)=>{
@@ -14,6 +15,7 @@ const ClientSlice = createSlice({
             state.accessToken = action.payload.accessToken
             state.client= action.payload.client
             state.purchased_domains = action.payload.purchased_domains
+            state.subscription = action.payload.subscription
         },
         DomainAdd:(state,action)=>{
            if (state.purchased_domains ){
@@ -24,16 +26,26 @@ const ClientSlice = createSlice({
            }
            
         },
+        SubscribeAdd:(state,action)=>{
+            if (state.subscription){
+             state.subscription.push(action.payload.subscription)
+            }
+            else{
+             state.subscription=[action.payload.subscription]
+            }
+            
+         },
         ClientLogout:(state,action)=>{
             state.refreshToken =  null
             state.accessToken = null
             state.client= null
             state.purchased_domains=null
+            state.subscription = null
            
         }
 
     }
 })
-export const {ClientLogin,ClientLogout,DomainAdd} = ClientSlice.actions
+export const {ClientLogin,ClientLogout,DomainAdd,SubscribeAdd} = ClientSlice.actions
 export default  ClientSlice.reducer
 

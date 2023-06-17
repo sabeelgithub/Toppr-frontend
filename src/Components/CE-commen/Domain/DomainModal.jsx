@@ -9,86 +9,85 @@ import { button } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import jwt from 'jwt-decode'
 import { domain_purchase, getSubTutorials, getTutorials } from "../../../Axios/Services/ClientServices";
-import DomainSuccessModal from "./DomainSuccessModal";
-import { ClientLogin, DomainAdd } from "../../../Redux/ClientSlice";
+import { DomainAdd } from "../../../Redux/ClientSlice";
 
 
 
-function DomainModal({ setShowDomainModal, FindItem ,setShowDomainSuccessModal}) {
+function DomainModal({ setShowDomainModal, FindItem, setShowDomainSuccessModal }) {
 
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
-    const [Tutorials,setTutorials] = useState([])
-    const [SubTutorial,setSubTutorial] = useState([])
-    
+    const [Tutorials, setTutorials] = useState([])
+    const [SubTutorial, setSubTutorial] = useState([])
 
 
-    
-    const token = useSelector(state=>state.ClientReducer.accessToken)
-    
+
+
+    const token = useSelector(state => state.ClientReducer.accessToken)
+
     const user = jwt(token)
-    
+
     const dispatch = useDispatch()
-    
-    
-    
 
 
 
-    
- 
 
 
-    
 
-    useEffect(()=>{
-        try{
-            const fetchTutorials = async()=>{
+
+
+
+
+
+
+    useEffect(() => {
+        try {
+            const fetchTutorials = async () => {
                 const response = await getTutorials(token)
-                if(response){
-                    const filter = response?.payload.filter((item)=>item.domain_id===FindItem.id)
+                if (response) {
+                    const filter = response?.payload.filter((item) => item.domain_id === FindItem.id)
                     setTutorials(filter)
 
                 }
-                
 
-            
+
+
             }
             fetchTutorials()
-            const fetchSubTutorials = async()=>{
+            const fetchSubTutorials = async () => {
                 const response = await getSubTutorials(token)
-                if(response){
-                    const filter = response?.payload.filter((item)=>item.domain_id===FindItem.id)
+                if (response) {
+                    const filter = response?.payload.filter((item) => item.domain_id === FindItem.id)
                     setSubTutorial(filter)
 
                 }
-                
 
-            
+
+
             }
             fetchSubTutorials()
 
         }
-        catch (error){
+        catch (error) {
             console.log(error)
         }
 
-    },[])
+    }, [])
 
-    const domain_order = async(order_id)=>{
-        const data={
-            order_id:order_id,
-            domain:FindItem.id,
-            domain_name:FindItem.domain_name,
-            price:FindItem.price,
-            user : user.user_id
+    const domain_order = async (order_id) => {
+        const data = {
+            order_id: order_id,
+            domain: FindItem.id,
+            domain_name: FindItem.domain_name,
+            price: FindItem.price,
+            user: user.user_id
         }
-        const response = await domain_purchase(token,data)
-        if (response){
-            if (response?.status===200){
+        const response = await domain_purchase(token, data)
+        if (response) {
+            if (response?.status === 200) {
                 setShowDomainModal(false)
                 setShowDomainSuccessModal(true)
-                dispatch(DomainAdd({purchased_domains:{domain_id:FindItem.id}}))
+                dispatch(DomainAdd({ purchased_domains: { domain_id: FindItem.id } }))
 
 
             } else {
@@ -103,7 +102,7 @@ function DomainModal({ setShowDomainModal, FindItem ,setShowDomainSuccessModal})
 
     return (
         <>
-        
+
             <Transition.Root show={open} as={Fragment}>
                 <Dialog
                     as="div"
@@ -167,81 +166,76 @@ function DomainModal({ setShowDomainModal, FindItem ,setShowDomainSuccessModal})
                                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                                             <dt className="text-sm font-medium leading-6 text-gray-900">Tutorials coming under this</dt>
                                                             <div className="md:flex ">
-                                                            {Tutorials?.length !==0 ? Tutorials?.map((item)=>{
-                                                                return (
-                                                                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{item.tutorial_name} ,</dd>
+                                                                {Tutorials?.length !== 0 ? Tutorials?.map((item) => {
+                                                                    return (
+                                                                        <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{item.tutorial_name} ,</dd>
 
-                                                                )
-                                                            }) : <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">No Tutorials</dd>}
+                                                                    )
+                                                                }) : <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">No Tutorials</dd>}
                                                             </div>
-                                                            
+
                                                         </div>
                                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                                             <dt className="text-sm font-medium leading-6 text-gray-900">Sub Tutorial coming uder this</dt>
                                                             <div className="md:flex ">
-                                                            {SubTutorial?.length !==0 ? SubTutorial?.map((item)=>{
-                                                                return (
-                                                                    <dd className="mt-1 text-sm leading-6 text-gray-700 md:col-span-2 sm:mt-0">{item.sub_tutorial_name} ,</dd>
+                                                                {SubTutorial?.length !== 0 ? SubTutorial?.map((item) => {
+                                                                    return (
+                                                                        <dd className="mt-1 text-sm leading-6 text-gray-700 md:col-span-2 sm:mt-0">{item.sub_tutorial_name} ,</dd>
 
-                                                                )
-                                                            }): <dd className="mt-1 text-sm leading-6 text-gray-700 md:col-span-2 sm:mt-0">No Sub Tutorials</dd>}
+                                                                    )
+                                                                }) : <dd className="mt-1 text-sm leading-6 text-gray-700 md:col-span-2 sm:mt-0">No Sub Tutorials</dd>}
                                                             </div>
-                                                           
+
                                                         </div>
                                                         <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                                                        <dt className="text-sm font-medium leading-6 text-gray-900">price</dt>
-                                                        <div className="md:flex ">
-                                                       
+                                                            <dt className="text-sm font-medium leading-6 text-gray-900">price</dt>
+                                                            <div className="md:flex ">
+
                                                                 <dd className="mt-1  leading-6 text-green-500 md:col-span-2 sm:mt-0 font-extrabold text-2xl">₹{FindItem?.price}</dd>
 
-                                                          
+
+                                                            </div>
                                                         </div>
-                                                       
-                                                    </div>
-
-
-
-
                                                     </dl>
                                                 </div>
-                                                  
-                                                {SubTutorial?.length !==0 ? <div className=" mt-5  flex justify-center">
-                                                <PayPalScriptProvider options={{"client-id":"AT1Ktl9NZX0bdIVhIFfvOjqfKDW5TvuaFxVO5lVaTdnSar8jCMdbbW6ZEDCGdNznqKdAUO1LCQO5B3Az"}}>
-                                                <PayPalButtons style={{ layout: "vertical" }} className="w-2/5"  
-                                                createOrder={(data,actions)=>{
-                                                     return actions.order.create({
-                                                        purchase_units:[
-                                                            {
-                                                                amount:{
-                                                                    value:FindItem.price    
-                                                                },
-                                                            },
-                                                        ],
-                                                    });
-                                                }} 
-                                                onApprove={(data,actions)=>{
-                                                    return actions.order.capture().then((response)=>{
-                                                        console.log(response)
-                                                        domain_order(response.id)
-                                                    })
-                                                 }
-                                                
-                                                }/>
-                                                </PayPalScriptProvider>
+
+                                                {SubTutorial?.length !== 0 ? <div className=" mt-5  flex justify-center">
+                                                    <PayPalScriptProvider options={{ "client-id": "AT1Ktl9NZX0bdIVhIFfvOjqfKDW5TvuaFxVO5lVaTdnSar8jCMdbbW6ZEDCGdNznqKdAUO1LCQO5B3Az" }}>
+                                                        <PayPalButtons style={{ layout: "vertical" }} className="w-2/5"
+                                                            createOrder={(data, actions) => {
+                                                                return actions.order.create({
+                                                                    purchase_units: [
+                                                                        {
+                                                                            amount: {
+                                                                                value: FindItem.price
+                                                                            },
+                                                                        },
+                                                                    ],
+                                                                });
+                                                            }}
+                                                            onApprove={(data, actions) => {
+                                                                return actions.order.capture().then((response) => {
+                                                                    console.log(response)
+                                                                    domain_order(response.id)
+                                                                })
+                                                            }
+
+                                                            } />
+                                                    </PayPalScriptProvider>
                                                 </div> : <div class="flex flex-col items-center justify-center h-full">
-                                                <p className="font-extrabold text-gray-400 text-center">Insuffient Sub tutorials</p>
-                                                <button onClick={()=>{
-                                                    setShowDomainModal(false)
-                                                }} data-modal-hide="popup-modal" type="button" className="text-white mt-3 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                                                    Go Back
-                                                </button>
-                                              
-                                              </div>}
-                                               
-                                                
-                                                
-                            
-                                               
+                                                    <p className="font-extrabold text-gray-400 text-center">Insuffient Sub tutorials</p>
+                                                    <button onClick={() => {
+                                                        setShowDomainModal(false)
+                                                    }} data-modal-hide="popup-modal" type="button" className="text-white mt-3 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                                        Go Back
+                                                    </button>
+
+                                                </div>}
+
+
+
+
+
 
 
                                             </div>

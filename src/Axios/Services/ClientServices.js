@@ -105,6 +105,49 @@ export const getExpertsToPerticularDomain = async(token,domain_name)=>{
 
 }
 
+// get single experts details 
+
+export const getSingleExpertDetails = async(token,id)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json",
+                Authorization: `Bearer ${token}`,
+    
+            },
+            params: {
+                id: id,
+            },
+        }
+        const response = await axiosClientInstance('client/single-experts/',config)
+        return response.data
+
+        }
+    catch (error){
+        console.log(error.message)
+    }
+}
+
+
+// subscribing experts
+export const Subscribe = async (token,data)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json",
+                Authorization: `Bearer ${token}`,
+    
+            }
+        }
+        const response = await axiosClientInstance.post('client/subscribe/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
+
 
 
 

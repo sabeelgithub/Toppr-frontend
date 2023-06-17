@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BsArrowLeftCircle, BsBorderWidth, BsChatDotsFill } from "react-icons/bs";
+import { BsArrowLeftCircle, BsBorderWidth} from "react-icons/bs";
 import { HiUsers } from "react-icons/hi";
 import { IoIosNotifications } from "react-icons/io";
-import { BiFootball } from "react-icons/bi";
 import { MdAnalytics, MdAdminPanelSettings, MdPhotoLibrary,  } from "react-icons/md";
 import { MdLogout } from "react-icons/md";
 import HamburgerButton from "../HamburgerMenuButton/HamburgerButton";
@@ -32,6 +31,7 @@ const Sidebar = () => {
         { title: "Domains", path: "/admin/domains", src: <BsBorderWidth /> },
         { title: "Tutorial", path: "/admin/tutorials", src: <BsBorderWidth /> },
         { title: "Sub-Tutorial", path: "/admin/sub-tutorials", src: <BsBorderWidth /> },
+        { title: "Rating", path: "/admin/rating", src: <BsBorderWidth /> },
        
         
         {
@@ -40,7 +40,7 @@ const Sidebar = () => {
             src: <MdAdminPanelSettings />,
         },
        
-        { title: "Bookings", path: "", src: <BsBorderWidth /> },
+        { title: "Subscriptions", path: "/admin/subscriptions", src: <BsBorderWidth /> },
        
         { title: "Add City", path: "", src: <FaCity /> },
         { title: "Banner", path: "", src: <MdPhotoLibrary /> },

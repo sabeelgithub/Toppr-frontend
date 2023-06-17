@@ -9,8 +9,9 @@ import DomainListPage from '../Pages/Admin/DomainListPage'
 import TutorialListPage from '../Pages/Admin/TutorialListPage'
 import SubTutorialPage from '../Pages/Admin/SubTutorialPage'
 import { useSelector } from 'react-redux'
-import Login from '../Pages/Login'
 import DomainPurchaseListPage from '../Pages/Admin/DomainPurchaseListPage'
+import SubscriptionListPage from '../Pages/Admin/SubscriptionListPage'
+import RatingPage from '../Pages/Admin/RatingPage'
 
 
 function AdminRoutes() {
@@ -30,7 +31,9 @@ function AdminRoutes() {
           <Route path="/domains" element={ isAuth ? <DomainListPage/> : <Navigate to="/login"/>} />
           <Route path="/tutorials" element={ isAuth ? <TutorialListPage/> : <Navigate to="/login"/>} />
           <Route path="/sub-tutorials" element={ isAuth ? <SubTutorialPage/> : <Navigate to="/login"/>} />
+          <Route path="/rating" element={ isAuth ? <RatingPage/> : <Navigate to="/login"/>} />
           <Route path="/domain-purchase" element={ isAuth ? <DomainPurchaseListPage/> : <Navigate to="/login"/>} />
+          <Route path="/subscriptions" element={ isAuth ? <SubscriptionListPage/> : <Navigate to="/login"/>} />
       </Routes> 
     </>
   )
