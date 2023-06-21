@@ -20,7 +20,8 @@ export default function Dark() {
   const [ShowDomainSuccessModal,setShowDomainSuccessModal] = useState(false)
   
 
-  const token = useSelector(state => state.ClientReducer.accessToken)
+  const client_token = useSelector(state => state.ClientReducer.accessToken)
+  const expert_token = useSelector(state => state.ExpertReducer.accessToken)
   const navigate = useNavigate()
 
   const purchasedDomains = useSelector(state=>state.ClientReducer.purchased_domains)
@@ -81,9 +82,12 @@ export default function Dark() {
                   <div className="flex items-center justify-between mt-5">
                     <span className="text-3xl font-bold text-gray-900 dark:text-white">₹{item.price}</span>
                     <button onClick={()=>{
-                      if(token){
+                      if(client_token){
                         fetch(item.id)
                         navigate(`/domain/${item.domain_name}`)
+                      } else if (expert_token){
+                        toast.warning('You cant Purchase Domain,because your are an Expert')
+                        navigate('/')
                       } else {
                         toast.warning('Login Required')
                         navigate('/login')
@@ -110,9 +114,12 @@ export default function Dark() {
                   <div className="flex items-center justify-between mt-5">
                     <span className="text-3xl font-bold text-gray-900 dark:text-white">₹{item.price}</span>
                     <button onClick={()=>{
-                      if(token){
+                      if(client_token){
                         fetch(item.id)
                         setShowDomainModal(!ShowDomainModal)
+                      } else if (expert_token){
+                        toast.warning('You cant Purchase Domain,because your are a Expert')
+                        navigate('/')
                       } else {
                         toast.warning('Login Required')
                         navigate('/login')

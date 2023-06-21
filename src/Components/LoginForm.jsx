@@ -37,7 +37,7 @@ function LoginForm() {
 
         } else if (response.person==='expert'){
           dispatch(ExpertLogin({refreshToken:response.refresh,accessToken:response.access,expert:{username:response.username,person:response.person}}))
-           
+          navigate('/') 
 
         } else if(response.person==='admin'){
           dispatch(AdminLogin({refreshToken:response.refresh,accessToken:response.access,admin:{username:response.username,person:response.person}}))

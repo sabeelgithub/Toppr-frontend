@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getExpertsList, handleExpertStatus } from '../../../Axios/Services/AdminServices'
 import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 
 
 function ExpertList() {
@@ -31,7 +32,12 @@ function ExpertList() {
                 status: status
             }
             const response = await handleExpertStatus(token,data)
-            setRefresh(!Refresh)
+            if(response){
+                setRefresh(!Refresh)
+                toast.success(response?.message)
+
+            }
+            
         }
         catch (error) {
             console.log(error)

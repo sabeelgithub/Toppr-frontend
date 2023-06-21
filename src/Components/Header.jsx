@@ -15,6 +15,7 @@ import icon from "../Assets/ICON.jpg"
 
 import { useDispatch, useSelector } from 'react-redux'
 import { ClientLogout } from '../Redux/ClientSlice'
+import { ExpertLogout } from '../Redux/ExpertSlice'
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -37,8 +38,10 @@ export default function Header() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const token = useSelector((state)=>state.ClientReducer.accessToken)
-  const user = useSelector((state)=>state.ClientReducer.client)
+  const token_client = useSelector((state)=>state.ClientReducer.accessToken)
+  const expert_token = useSelector((state)=>state.ExpertReducer.accessToken)
+  const client = useSelector((state)=>state.ClientReducer.client)
+  const expert = useSelector((state)=>state.ExpertReducer.expert)
   
  
 
@@ -74,15 +77,38 @@ export default function Header() {
         </Popover.Group>
         
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-        <p className='text-white mx-32 mt-2'>{user?.username}</p>
-        {token ?  <button  onClick={()=>{
-          dispatch(ClientLogout())
-          navigate('/')
-        }} className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
-        Log out 
-      </button> : <Link  to="/login" className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
-      Log In 
-    </Link> }
+       
+         {(client || expert) && (
+          <Link to="/profile" className='text-white mx-32 mt-2 uppercase'>
+            {client?.username || expert?.username}
+          </Link>
+        )}
+       
+        
+
+
+       
+
+        {
+          (token_client || expert_token) ? (
+            <button onClick={() => {
+              if (token_client) {
+                dispatch(ClientLogout());
+                localStorage.setItem('Component','dashboard')
+              } else if (expert_token) {
+                dispatch(ExpertLogout());
+                localStorage.setItem('Component','dashboard')
+              }
+              navigate('/');
+            }} className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
+              Log out
+            </button>
+          ) : (
+            <Link to="/login" className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
+              Log In
+            </Link>
+          )
+        }
           
         </div>
       </nav>

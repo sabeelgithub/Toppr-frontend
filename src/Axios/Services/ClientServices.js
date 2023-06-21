@@ -148,6 +148,48 @@ export const Subscribe = async (token,data)=>{
     }
 }
 
+// client profile
+export const getClientProfile = async (token,id)=>{
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json",
+                Authorization: `Bearer ${token}`,
+    
+            },
+            params:{
+                id:id,
+                person:'client'
+            }
+        }
+        const response = await axiosClientInstance.get('client/profile/',config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
+export const editClientProfile = async (token,data)=>{
+   
+    try{
+        const config = {
+            headers:{
+                "Content-type": "multipart/formdata",
+                Authorization: `Bearer ${token}`,
+    
+            },
+            
+        }
+    const response = await axiosClientInstance.patch('client/profile/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
+
 
 
 

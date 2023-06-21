@@ -154,7 +154,7 @@ export const getDomains = async (token) => {
 }
 
 // delete Domain
-export const DeleteDomains = async (token, id) => {
+export const HandleBlockAndUnblock = async (token, id,status) => {
     try {
         const config = {
             headers: {
@@ -163,6 +163,7 @@ export const DeleteDomains = async (token, id) => {
             },
             params: {
                 id: id,
+                status:status
             },
         }
         

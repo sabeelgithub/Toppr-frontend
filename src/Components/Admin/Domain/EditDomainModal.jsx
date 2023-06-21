@@ -140,10 +140,9 @@ function EditDomainModal({setEditModal,FindItem,Refresh,setRefresh}) {
                                    {errors.price && touched.price && (
                                     <p className="text-red-600">{errors.price}</p>
                                   )}
-                                  
-
 
                                </div>
+
                                <div>
                                <input
                                onChange={(evt)=>setFieldValue('image',evt.target.files[0])}
@@ -151,9 +150,8 @@ function EditDomainModal({setEditModal,FindItem,Refresh,setRefresh}) {
                                aria-describedby="user_avatar_help"
                                name="image"
                                id="image"
-                               type="file"
-                             ></input>
-           
+                               type="file">
+                               </input>
                                </div>
 
                                <button  type="submit" className="w-full text-black bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add</button>

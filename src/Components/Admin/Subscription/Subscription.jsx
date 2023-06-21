@@ -24,7 +24,7 @@ function Subscription() {
 
     },[])
   return (
-    <div className='bg-white h-full pl-32 pr-20 py-20 '>
+    <div className='bg-white h-full pl-10 pr-20 py-20 '>
     <div className=" flex flex-col overflow-x-hidden">
 
         {Data?.length === 0 ? <div className='flex justify-center flex-wrap'> <div className='bg-white text-center w-full font-extrabold'>No Records </div></div> :
@@ -46,6 +46,7 @@ function Subscription() {
                                     <th scope="col" className="text-yellow-400 px-6 py-4">Admin Share</th>
                                     <th scope="col" className="text-yellow-400 px-6 py-4">Subscribed On</th>
                                     <th scope="col" className="text-yellow-400 px-6 py-4">Expire On</th>
+                                    <th scope="col" className="text-yellow-400 px-6 py-4">Terminated</th>
                                     
                                  
 
@@ -67,6 +68,7 @@ function Subscription() {
                                         <td className="text-white whitespace-nowrap px-6 py-4">₹ {item.admin_share}</td>
                                         <td className="text-white whitespace-nowrap px-6 py-4">{item.subscription_date}</td>
                                         {item.status === true ? <td className="text-yellow-300 whitespace-nowrap px-6 py-4">{item.expire_on}</td> : <td className="text-red-500 whitespace-nowrap px-6 py-4">-------</td>}
+                                        {item.terminated === true ? <td className="text-yellow-300 whitespace-nowrap px-6 py-4">Yes</td> : <td className="text-red-500 whitespace-nowrap px-6 py-4">-------</td>  }
                                        
                                        
                                     </tr>

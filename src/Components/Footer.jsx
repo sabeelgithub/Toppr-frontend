@@ -16,12 +16,7 @@ function Footer() {
             <li class="mb-4">
                 <a href="#" class="hover:underline">Careers</a>
             </li>
-            <li class="mb-4">
-                <a href="#" class="hover:underline">Brand Center</a>
-            </li>
-            <li class="mb-4">
-                <a href="#" class="hover:underline">Blog</a>
-            </li>
+           
         </ul>
     </div>
     <div>
@@ -33,12 +28,7 @@ function Footer() {
             <li class="mb-4">
                 <a href="#" class="hover:underline">Twitter</a>
             </li>
-            <li class="mb-4">
-                <a href="#" class="hover:underline">Facebook</a>
-            </li>
-            <li class="mb-4">
-                <a href="#" class="hover:underline">Contact Us</a>
-            </li>
+          
         </ul>
     </div>
     <div>
@@ -47,12 +37,7 @@ function Footer() {
             <li class="mb-4">
                 <a href="#" class="hover:underline">Privacy Policy</a>
             </li>
-            <li class="mb-4">
-                <a href="#" class="hover:underline">Licensing</a>
-            </li>
-            <li class="mb-4">
-                <a href="#" class="hover:underline">Terms &amp; Conditions</a>
-            </li>
+         
         </ul>
     </div>
     <div>
@@ -64,12 +49,7 @@ function Footer() {
             <li class="mb-4">
                 <a href="#" class="hover:underline">Android</a>
             </li>
-            <li class="mb-4">
-                <a href="#" class="hover:underline">Windows</a>
-            </li>
-            <li class="mb-4">
-                <a href="#" class="hover:underline">MacOS</a>
-            </li>
+          
         </ul>
     </div>
 </div>

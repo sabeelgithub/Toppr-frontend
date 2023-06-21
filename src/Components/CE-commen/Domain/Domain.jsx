@@ -13,7 +13,8 @@ export default function Domain() {
     const [ShowDomainSuccessModal,setShowDomainSuccessModal] = useState(false)
     const navigate = useNavigate()
 
-    const token = useSelector(state => state.ClientReducer.accessToken)
+    const client_token = useSelector(state => state.ClientReducer.accessToken)
+    const expert_token = useSelector(state => state.ExpertReducer.accessToken)
     const purchasedDomains = useSelector(state=>state.ClientReducer.purchased_domains)
     useEffect(()=>{
         try{
@@ -61,10 +62,13 @@ export default function Domain() {
     <div className="flex items-center justify-between mt-5">
       <span className="text-3xl font-bold text-gray-900 dark:text-white">₹{item.price}</span>
       <button onClick={()=>{
-        if(token){
+        if(client_token){
           // setShowDomainModal(!ShowDomainModal)
           navigate(`/domain/${item.domain_name}`)
           fetch(item.id)
+        } else if(expert_token){
+          toast.warning('You cant Purchase Domain,because your are an Expert') 
+          navigate('/')
         } else {
           toast.warning('Login Required')
           navigate('/login')
@@ -94,10 +98,13 @@ export default function Domain() {
     <div className="flex items-center justify-between mt-5">
       <span className="text-3xl font-bold text-gray-900 dark:text-white">₹{item.price}</span>
       <button onClick={()=>{
-        if(token){
+        if(client_token){
           setShowDomainModal(!ShowDomainModal)
           // setShowDomainSuccessModal(!ShowDomainSuccessModal)
           fetch(item.id)
+        }  else if(expert_token){
+          toast.warning('You cant Purchase Domain,because your are an Expert') 
+          navigate('/')
         } else {
           toast.warning('Login Required')
           navigate('/login')
