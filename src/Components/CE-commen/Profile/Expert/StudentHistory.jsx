@@ -1,19 +1,18 @@
 import React from 'react'
 
-function MyStudents({Students}) {
-  const filter  = Students.filter((item)=>item.status===true)
+function StudentHistory({Students}) {
   return (
     <>
     <div className="mt-1 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
                 <div className="w-full flex flex-col 2xl:w-1/3">
                     <div className="flex-1 bg-black  shadow-xl p-8">
-                    {filter?.length!==0 && <p className='text-center text-white font-extrabold text-2xl mb-3'>My Students</p>}
+                    {Students.length!==0 && <p className='text-center text-white font-extrabold text-2xl mb-3'>Students History</p>}
                         <section className="bg-black">
                             <div className="container">
                                 <div className="flex flex-wrap -mx-4">
                                     <div className="w-full px-4">
                                         <div className="max-w-full overflow-x-auto">
-                                            {filter?.length === 0 ? <div><p className='text-white text-center text-2xl font-semibold'>No Records</p>
+                                            {Students.length === 0 ? <div><p className='text-white text-center text-2xl font-semibold'>No Records</p>
                                             </div> :
                                                 <table className="table-auto w-full">
                                                     <thead>
@@ -71,8 +70,32 @@ function MyStudents({Students}) {
                                                             ">
                                                                 Duration
                                                             </th>
-                                                            
-                                                           
+                                                            <th className="
+                                                            w-1/6
+                                                            min-w-[160px]
+                                                            text-lg
+                                                            font-semibold
+                                                            text-white
+                                                            py-3
+                                                            lg:py-3
+                                                            px-3
+                                                            lg:px-4
+                                                            ">
+                                                               My share
+                                                            </th>
+                                                            <th className="
+                                                            w-1/6
+                                                            min-w-[160px]
+                                                            text-lg
+                                                            font-semibold
+                                                            text-white
+                                                            py-3
+                                                            lg:py-3
+                                                            px-3
+                                                            lg:px-4
+                                                            ">
+                                                                Status
+                                                            </th>
                                                             <th className="
                                                             w-1/6
                                                             min-w-[160px]
@@ -99,11 +122,23 @@ function MyStudents({Students}) {
                                                             ">
                                                                 Expire On
                                                             </th>
-                                                           
+                                                            <th className="
+                                                            w-1/6
+                                                            min-w-[160px]
+                                                            text-lg
+                                                            font-semibold
+                                                            text-white
+                                                            py-3
+                                                            lg:py-3
+                                                            px-3
+                                                            lg:px-4
+                                                            ">
+                                                               Terminated
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {filter?.length !== 0 && filter?.map((item, index) => {
+                                                        {Students?.length !== 0 && Students?.map((item, index) => {
                                                             return (
                                                                 <tr>
                                                                     <td className="
@@ -155,8 +190,54 @@ function MyStudents({Students}) {
                                                                     ">
                                                                         {item.duration}
                                                                     </td>
+                                                                    {item.terminated ? <td className="
+                                                                    text-center text-dark
+                                                                    font-medium
+                                                                    text-base
+                                                                    py-5
+                                                                    px-2
+                                                                    bg-[#F3F6FF]
+                                                                    border-b border-[#E8E8E8]
                                                                     
+                                                                    ">
+                                                                    <strike>   ₹ {item.expert_share} </strike>
+                                                                       
+                                                                    </td>:  <td className="
+                                                                    text-center text-dark
+                                                                    font-medium
+                                                                    text-base
+                                                                    py-5
+                                                                    px-2
+                                                                    bg-[#F3F6FF]
+                                                                    border-b border-[#E8E8E8]
                                                                     
+                                                                    ">
+                                                                    ₹ {item.expert_share}  
+                                                                    </td> }
+                                                                   
+
+                                                                    {item.status ? <td className="
+                                                                    text-center text-dark
+                                                                    font-medium
+                                                                    text-base
+                                                                    py-5
+                                                                    px-2
+                                                                    
+                                                                    bg-[#F3F6FF]
+                                                                    border-b border-[#E8E8E8]
+                                                                    ">
+                                                                        <p className='text-green-600'> Active</p>
+                                                                    </td> : <td className="
+                                                                    text-center text-dark
+                                                                    font-medium
+                                                                    text-base
+                                                                    py-5
+                                                                    px-2
+                                                                    bg-[#F3F6FF]
+                                                                    border-b border-[#E8E8E8]
+                                                                    ">
+                                                                        <p className='text-red-600'> Expired</p>
+                                                                    </td>}
                                                                     <td  className="
                                                                     text-center text-dark
                                                                     font-medium
@@ -192,6 +273,28 @@ function MyStudents({Students}) {
                                                                         -----
                                                                     </td>}
                                                                     
+                                                                    {item.terminated ?  <td className="
+                                                                    text-center text-dark
+                                                                    font-medium
+                                                                    text-base
+                                                                    py-5
+                                                                    px-2
+                                                                    bg-[#F3F6FF]
+                                                                    border-b border-[#E8E8E8]
+                                                                    ">
+                                                                        Yes,This is Subscription is Expired Due to your perfomance issue,
+                                                                        your Wage is credited to your wallet
+                                                                    </td>  :  <td className="
+                                                                    text-center text-dark
+                                                                    font-medium
+                                                                    text-base
+                                                                    py-5
+                                                                    px-2
+                                                                    bg-[#F3F6FF]
+                                                                    border-b border-[#E8E8E8]
+                                                                    ">
+                                                                        ______
+                                                                    </td> }
 
                                                                 </tr>
 
@@ -216,4 +319,4 @@ function MyStudents({Students}) {
   )
 }
 
-export default MyStudents
+export default StudentHistory

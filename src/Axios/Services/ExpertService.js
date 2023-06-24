@@ -1,7 +1,7 @@
 import { axiosExpertInstance } from "../Instances/Instance";
 
 
-// client profile
+// expert profile
 export const getExpertProfile = async (token,id)=>{
     try{
         const config = {
@@ -37,6 +37,27 @@ export const editExpertProfile = async (token,data)=>{
             
         }
     const response = await axiosExpertInstance.patch('profile/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
+
+
+export const expertAddSlots = async (token,data)=>{
+   
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json",
+                Authorization: `Bearer ${token}`,
+    
+            },
+            
+        }
+    const response = await axiosExpertInstance.post('slots/',data,config)
         return response.data
 
     }

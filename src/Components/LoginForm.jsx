@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './LoginForm.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
-import { LoginSchema } from '../Validations/lofinvalidation'
+import { LoginSchema } from '../Validations/loginvalidation' 
 import { Login } from '../Axios/Services/CommenServices'
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux'

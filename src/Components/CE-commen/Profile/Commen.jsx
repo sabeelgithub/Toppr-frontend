@@ -6,8 +6,8 @@ import { getExpertProfile } from '../../../Axios/Services/ExpertService'
 import { HiUsers } from 'react-icons/hi'
 import { FaPowerOff } from 'react-icons/fa';
 import { CgProfile } from "react-icons/cg";
-
-
+import { TbBrandBooking } from "react-icons/tb";
+import {LuHistory} from "react-icons/lu";
 import { BiEdit, BiCategory } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom'
 import Dashboard from './DashBoard'
@@ -16,6 +16,9 @@ import MyMentors from './Client/MyMentors'
 import ClientEditModal from './Client/ClientEditModal'
 import MyStudents from './Expert/MyStudents'
 import ExpertEditModal from './Expert/ExpertEditModal'
+import MentorHistory from './Client/MentorHistory'
+import StudentHistory from './Expert/StudentHistory'
+import AddSlots from './Expert/AddSlots'
 
 
 
@@ -29,7 +32,8 @@ function Commen() {
   const [MyTeachers, setMyTeachers] = useState([])
   const [Expert, setExpert] = useState('')
   const [Students, setStudents] = useState([])
-
+  const [Slots,setSlots] = useState([])
+   
   const [Options, setOptions] = useState(false)
 
   const [Component,setComponent] = useState('dashboard')
@@ -50,6 +54,9 @@ function Commen() {
             } else if (response?.MyDomains) {
               setClient(response?.payload)
               setDomains(response?.MyDomains)
+            } else {
+              setClient(response?.payload)
+
             }
 
           }
@@ -62,11 +69,17 @@ function Commen() {
         const expertProfile = async () => {
           const response = await getExpertProfile(token_expert, expert?.user_id)
           if (response) {
-            if (response?.MyStudents) {
+            if (response?.MyStudents && response?.slots) {
+              setExpert(response?.payload)
+              setStudents(response?.MyStudents)
+              setSlots(response?.slots)
+
+            } else if (response?.MyStudents) {
               setExpert(response?.payload)
               setStudents(response?.MyStudents)
             } else {
-              setExpert(response?.payload)
+                setExpert(response?.payload)
+
             }
           }
         }
@@ -140,6 +153,24 @@ function Commen() {
                   <span className="text-sm text-gray-700">My Students</span>
                 </button>
                   <button onClick={()=>{
+                    setComponent('addslots')
+                    localStorage.setItem('Component', 'addslots');
+                    setOptions(false)
+
+                }} className="w-full flex items-center py-1.5 px-6 space-x-2 hover:bg-gray-200">
+                  <TbBrandBooking />
+                  <span className="text-sm text-gray-700">Slots</span>
+                </button>
+                  <button onClick={()=>{
+                    setComponent('student-history')
+                    localStorage.setItem('Component', 'student-history');
+                    setOptions(false)
+
+                }} className="w-full flex items-center py-1.5 px-6 space-x-2 hover:bg-gray-200">
+                   <LuHistory />
+                  <span className="text-sm text-gray-700">History</span>
+                </button>
+                  <button onClick={()=>{
                     setExpertEdit(!ExpertEdit)
                     setOptions(false)
 
@@ -179,6 +210,15 @@ function Commen() {
                     <span className="text-sm text-gray-700">My Mentors</span>
                   </button>
                   <button onClick={()=>{
+                    setComponent('mentor-history')
+                    localStorage.setItem('Component', 'mentor-history');
+                    setOptions(false)  
+
+                  }} className="w-full flex items-center py-1.5 px-6 space-x-2 hover:bg-gray-200">
+                    <LuHistory />
+                    <span className="text-sm text-gray-700">History</span>
+                  </button>
+                  <button onClick={()=>{
                     setClientEdit(!ClientEdit)
                     setOptions(false)
                   }} className="w-full flex items-center px-6 py-1.5 space-x-2 hover:bg-gray-200">
@@ -209,6 +249,9 @@ function Commen() {
         {localStorage.getItem('Component')==='mydomains' ? <MyDomains Domains={Domains} />:''}
         {localStorage.getItem('Component')==='mymentors' ? <MyMentors MyTeachers={MyTeachers} />:''}
         {localStorage.getItem('Component')==='mystudents' ? <MyStudents Students={Students} />:''}
+        {localStorage.getItem('Component')==='mentor-history' ? <MentorHistory MyTeachers={MyTeachers} />:''}
+        {localStorage.getItem('Component')==='student-history' ? <StudentHistory Students={Students} />:''}
+        {localStorage.getItem('Component')==='addslots' ? <AddSlots Students={Students} expert_id={Expert.id} Slots={Slots} setRefresh={setRefresh} Refresh={Refresh}/>:''}
         
 
       </div>

@@ -37,7 +37,6 @@ export default function Domain() {
 
     const fetch = (id)=>{
       const selectedItem = Domain?.find((item)=>item.id==id)
-      console.log(selectedItem)
       setFindItem(selectedItem)
     }
 
@@ -100,7 +99,6 @@ export default function Domain() {
       <button onClick={()=>{
         if(client_token){
           setShowDomainModal(!ShowDomainModal)
-          // setShowDomainSuccessModal(!ShowDomainSuccessModal)
           fetch(item.id)
         }  else if(expert_token){
           toast.warning('You cant Purchase Domain,because your are an Expert') 

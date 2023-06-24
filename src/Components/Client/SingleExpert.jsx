@@ -4,36 +4,53 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { getSingleExpertDetails } from '../../Axios/Services/ClientServices'
 import SubscriptionModal from './SubscriptionModal'
-import {FaVideo} from 'react-icons/fa'
+import { FaVideo } from 'react-icons/fa'
+import { isAfter} from 'date-fns';
 
 function SingleExpert() {
-  const [Expert,setExpert] = useState('')
-  const [Rating,setRating] = useState('')
-  const [ShowSubscriptionModal,setShowSubscriptionModal] = useState(false)
- 
+  const [Expert, setExpert] = useState('')
+  const [Rating, setRating] = useState('')
+  const [ShowSubscriptionModal, setShowSubscriptionModal] = useState(false)
+  const [Slots, setSlots] = useState([])
+
+  // const currentTime = new Date();
+  // const currentHour = currentTime.getHours();
+  // const currentMinutes = currentTime.getMinutes(); 
+  // const currentHourAndMinute =  `${currentHour}:${currentMinutes}`
+  // const filter = Slots?.filter((item)=>item.start_time>=currentHourAndMinute)
+
 
 
   const { id } = useParams()
-  const token = useSelector(state=>state.ClientReducer.accessToken)
-  const alreadySubscribed = useSelector(state=>state.ClientReducer.subscription)
+  const token = useSelector(state => state.ClientReducer.accessToken)
+  const alreadySubscribed = useSelector(state => state.ClientReducer.subscription)
 
   
-  
-  useEffect(()=>{
 
-    const fetchSigleExpert = async ()=>{
-      const response = await getSingleExpertDetails(token,id)
-      if(response){
-        setExpert(response?.payload)
-        setRating(response?.rating)
+
+
+
+  useEffect(() => {
+
+    const fetchSigleExpert = async () => {
+      const response = await getSingleExpertDetails(token, id)
+      if (response) {
+        if (response?.slots) {
+          setExpert(response?.payload)
+          setRating(response?.rating)
+          setSlots(response?.slots)
+        } else {
+          setExpert(response?.payload)
+          setRating(response?.rating)
+        }
 
 
       }
-    } 
+    }
     fetchSigleExpert()
 
 
-  },[])
+  }, [])
 
   const stars = [];
 
@@ -52,11 +69,24 @@ function SingleExpert() {
       </svg>
     );
   }
+  
 
+  const expireHandle = (end_time) => {
+
+    // Split the time string into hours, minutes, and seconds
+    const [hours, minutes, seconds] = end_time.split(':');
+
+    // Create a new Date object with the current date and the desired time
+    const EndDate = new Date();
+    EndDate.setHours(hours);
+    EndDate.setMinutes(minutes);
+    EndDate.setSeconds(seconds);
+    return isAfter( EndDate,new Date())
+}
 
   return (
     <>
-    {ShowSubscriptionModal ? <SubscriptionModal expertID={id} domainID={Expert?.domain_id} domain_name={Expert.domain} expert_name={Expert?.username} setShowSubscriptionModal={setShowSubscriptionModal} />: ''}
+      {ShowSubscriptionModal ? <SubscriptionModal expertID={id} domainID={Expert?.domain_id} domain_name={Expert.domain} expert_name={Expert?.username} setShowSubscriptionModal={setShowSubscriptionModal} /> : ''}
       <div className='h-full pt-16 pb-16 bg-black '>
         <div className='flex justify-center'>
           <div className='grid md:grid-cols-2  sm:grid-cols-1  w-3/4 bg-slate-500  h-full'>
@@ -75,20 +105,25 @@ function SingleExpert() {
 
                 <p className='text-center text-xl text-white mt-4'>For your carrier support make  connection </p>
                 <div className='flex justify-center mt-5'>
-               {alreadySubscribed?.length !==0 && alreadySubscribed?.find((item)=>item.expert_id==Expert.id) ?  <button onClick={()=>{
-                
-              }} className="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-7 rounded-lg ">
-              <div class="text-2xl">
-              <FaVideo />
-            </div>
-                
-              </button> :  <button onClick={()=>{
-                setShowSubscriptionModal(!ShowSubscriptionModal)
-              }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded-lg ">
-                Subscribe
-              </button>}
-                
+                  {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert.id) ? <div> <button onClick={() => {
+
+                  }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded-lg ">
+                    Book slot
+                  </button>
+
+                  </div> : <button onClick={() => {
+                    setShowSubscriptionModal(!ShowSubscriptionModal)
+                  }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded-lg ">
+                    Subscribe
+                  </button>}
+
+
+
+
+
+
                 </div>
+
 
               </div>
 
@@ -99,6 +134,26 @@ function SingleExpert() {
 
         </div>
       </div>
+      {/*slots*/}
+      {alreadySubscribed?.length !==0 && alreadySubscribed?.find((item) => item.expert_id == Expert.id)? 
+        <> {Slots?.length ? <p className='text-center  bg-black text-white font-extrabold text-2xl '>Available Slots for today</p>: <p className='text-center  bg-black text-white font-extrabold text-2xl pb-8' >No available slots</p> } </>
+       
+        :''}
+     
+
+      
+        <div className=' flex justify-center flex-wrap bg-black w-full pb-8'  >
+          {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert.id) ? <div className=' flex justify-center flex-wrap bg-black w-full'>
+            {Slots?.length !== 0 &&  Slots?.map((item) => {
+              return (
+                <div>
+                <div className={item.booked ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")}><p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p> </div>
+                {item.booked ? <p className='text-white text-center text-sm'>Booked</p> : ( expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
+                </div>
+              )
+            })}
+          </div> :''}
+        </div>
     </>
   )
 }
