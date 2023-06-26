@@ -28,8 +28,9 @@ export default function Dark() {
 
   useEffect(() => {
     try {
-      const fetchDomains = async () => {
+      const fetchDomains = async() => {
         const response = await getDomains()
+
         if(response){
           setDomain(response?.payload)
 

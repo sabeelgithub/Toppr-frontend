@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux'
 import { getSingleExpertDetails } from '../../Axios/Services/ClientServices'
 import SubscriptionModal from './SubscriptionModal'
 import { FaVideo } from 'react-icons/fa'
-import { isAfter} from 'date-fns';
+import { isAfter } from 'date-fns';
+import BookToken from './BookToken'
+import jwt from 'jwt-decode'
 
 function SingleExpert() {
   const [Expert, setExpert] = useState('')
@@ -13,19 +15,28 @@ function SingleExpert() {
   const [ShowSubscriptionModal, setShowSubscriptionModal] = useState(false)
   const [Slots, setSlots] = useState([])
 
-  // const currentTime = new Date();
-  // const currentHour = currentTime.getHours();
-  // const currentMinutes = currentTime.getMinutes(); 
-  // const currentHourAndMinute =  `${currentHour}:${currentMinutes}`
-  // const filter = Slots?.filter((item)=>item.start_time>=currentHourAndMinute)
+
+  const [ShowBookToken, setShowBookToken] = useState(false) // for booking token
+  const [FindItem, setFindItem] = useState('')
+  const [Refresh, setRefresh] = useState(false)
+
+  const [Client_Already_Booked_Slot, setClient_Already_Booked_Slot] = useState([])
+
+  const currentTime = new Date();
+
+  const currentHourAndMinute = `${currentTime.getHours()}:${currentTime.getMinutes() < 10 ? '0' : ''}${currentTime.getMinutes()}`
+
+
 
 
 
   const { id } = useParams()
   const token = useSelector(state => state.ClientReducer.accessToken)
   const alreadySubscribed = useSelector(state => state.ClientReducer.subscription)
+  const user = jwt(token)
 
-  
+
+
 
 
 
@@ -33,13 +44,21 @@ function SingleExpert() {
   useEffect(() => {
 
     const fetchSigleExpert = async () => {
-      const response = await getSingleExpertDetails(token, id)
+      const response = await getSingleExpertDetails(token, id, user.user_id)
       if (response) {
-        if (response?.slots) {
+        if (response?.slots && response?.client_already_booked_slot) {
           setExpert(response?.payload)
           setRating(response?.rating)
           setSlots(response?.slots)
-        } else {
+          const filtered_client_Booked_slots = response?.client_already_booked_slot?.filter((item) => item.end_time.slice(0, 5) >= currentHourAndMinute)
+          setClient_Already_Booked_Slot(filtered_client_Booked_slots)
+
+        } else if (response?.slots) {
+          setExpert(response?.payload)
+          setRating(response?.rating)
+          setSlots(response?.slots)
+        }
+        else {
           setExpert(response?.payload)
           setRating(response?.rating)
         }
@@ -50,8 +69,15 @@ function SingleExpert() {
     fetchSigleExpert()
 
 
-  }, [])
+  }, [Refresh])
 
+
+
+
+
+
+
+  // rating
   const stars = [];
 
   for (let i = 1; i <= Rating?.count; i++) {
@@ -69,8 +95,8 @@ function SingleExpert() {
       </svg>
     );
   }
-  
 
+  // expire / active / booked handle
   const expireHandle = (end_time) => {
 
     // Split the time string into hours, minutes, and seconds
@@ -81,18 +107,26 @@ function SingleExpert() {
     EndDate.setHours(hours);
     EndDate.setMinutes(minutes);
     EndDate.setSeconds(seconds);
-    return isAfter( EndDate,new Date())
-}
+    return isAfter(EndDate, new Date())
+  }
+
+  const slotFilter = (id) => {
+    const filter = Slots.find((item) => item.id === id)
+    setFindItem(filter)
+
+  }
 
   return (
     <>
       {ShowSubscriptionModal ? <SubscriptionModal expertID={id} domainID={Expert?.domain_id} domain_name={Expert.domain} expert_name={Expert?.username} setShowSubscriptionModal={setShowSubscriptionModal} /> : ''}
+
+      {ShowBookToken ? <BookToken setShowBookToken={setShowBookToken} FindItem={FindItem} setRefresh={setRefresh} Refresh={Refresh} /> : ''}
       <div className='h-full pt-16 pb-16 bg-black '>
         <div className='flex justify-center'>
           <div className='grid md:grid-cols-2  sm:grid-cols-1  w-3/4 bg-slate-500  h-full'>
 
             <div className=' h-96'>
-              <img className='object-cover w-full h-full ' src={`http://127.0.0.1:8000/${Expert.profile_poto}`} alt="profile_poto" />
+              <img className='object-cover w-full h-full ' src={`http://127.0.0.1:8000/${Expert?.profile_poto}`} alt="profile_poto" />
             </div>
             <div className='bg-stone-900 shadow-xl  h-96 items-center pt-7 pb-7'>
               <div className='p-5'>
@@ -103,24 +137,32 @@ function SingleExpert() {
 
                 <div className="flex items-center justify-center mt-3 ">{stars}</div>
 
-                <p className='text-center text-xl text-white mt-4'>For your carrier support make  connection </p>
-                <div className='flex justify-center mt-5'>
-                  {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert.id) ? <div> <button onClick={() => {
-
-                  }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded-lg ">
+                <p className='text-center text-xl text-white mt-3'>For your carrier support make  connection </p>
+                <div className='flex justify-center sm:mt-2 md:mt-4'>
+                  {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert?.id) ? <div> 
+                  
+                    {Client_Already_Booked_Slot.length && (Client_Already_Booked_Slot[0].start_time.slice(0,5) <= currentHourAndMinute && Client_Already_Booked_Slot[0].end_time.slice(0,5) >= currentHourAndMinute )? 
+                  <button  className="bg-green-500 w-28 hover:bg-green-700 text-white font-bold h-14 py-2 px-3 rounded-lg ml-8">
+                   <FaVideo className="mx-auto w-8 h-8"/>
+                   
+                  </button> :
+                  <button  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded-lg ml-8">
                     Book slot
-                  </button>
+                  </button> }
+                 
+
+
+                    {Client_Already_Booked_Slot.length && Client_Already_Booked_Slot.map((item) => {
+                      return (
+                        <div className="bg-gray-500 h-9 w-36 m-4 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3"> <p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p> </div>
+                      )
+                    })}
 
                   </div> : <button onClick={() => {
                     setShowSubscriptionModal(!ShowSubscriptionModal)
                   }} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded-lg ">
                     Subscribe
                   </button>}
-
-
-
-
-
 
                 </div>
 
@@ -135,25 +177,29 @@ function SingleExpert() {
         </div>
       </div>
       {/*slots*/}
-      {alreadySubscribed?.length !==0 && alreadySubscribed?.find((item) => item.expert_id == Expert.id)? 
-        <> {Slots?.length ? <p className='text-center  bg-black text-white font-extrabold text-2xl '>Available Slots for today</p>: <p className='text-center  bg-black text-white font-extrabold text-2xl pb-8' >No available slots</p> } </>
-       
-        :''}
-     
+      {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert.id) ?
+        <> {Slots?.length ? <p className='text-center  bg-black text-white font-extrabold text-2xl '>Available Slots for today</p> : <p className='text-center  bg-black text-white font-extrabold text-2xl pb-8' >No available slots</p>} </>
 
-      
-        <div className=' flex justify-center flex-wrap bg-black w-full pb-8'  >
-          {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert.id) ? <div className=' flex justify-center flex-wrap bg-black w-full'>
-            {Slots?.length !== 0 &&  Slots?.map((item) => {
-              return (
-                <div>
-                <div className={item.booked ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")}><p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p> </div>
-                {item.booked ? <p className='text-white text-center text-sm'>Booked</p> : ( expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
-                </div>
-              )
-            })}
-          </div> :''}
-        </div>
+        : ''}
+
+      <div className=' flex justify-center flex-wrap bg-black w-full pb-8'  >
+        {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert.id) ? <div className=' flex justify-center flex-wrap bg-black w-full'>
+          {Slots?.length !== 0 && Slots?.map((item) => {
+            return (
+              <div>
+                <div className={item.booked ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")} 
+                  onClick={() => {
+                  if (expireHandle(item.end_time) && item.booked === false && !Client_Already_Booked_Slot.length) {
+                    setShowBookToken(!ShowBookToken)
+                    slotFilter(item.id)
+                  }
+                }} ><p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p> </div>
+                {item.booked ? <p className='text-white text-center text-sm'>Booked</p> : (expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
+              </div>
+            )
+          })}
+        </div> : ''}
+      </div>
     </>
   )
 }

@@ -24,7 +24,7 @@ export const getExpertProfile = async (token,id)=>{
     }
 }
 
-
+// update profile
 export const editExpertProfile = async (token,data)=>{
    
     try{
@@ -45,7 +45,7 @@ export const editExpertProfile = async (token,data)=>{
     }
 }
 
-
+// add slots
 export const expertAddSlots = async (token,data)=>{
    
     try{
@@ -58,6 +58,32 @@ export const expertAddSlots = async (token,data)=>{
             
         }
     const response = await axiosExpertInstance.post('slots/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
+
+// get booked slot details
+
+
+export const getBookedSlotDetails = async (token,id)=>{
+   
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json",
+                Authorization: `Bearer ${token}`,
+    
+            },
+            params:{
+                id:id,
+            }
+            
+        }
+    const response = await axiosExpertInstance.get('slots/',config)
         return response.data
 
     }

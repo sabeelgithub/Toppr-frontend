@@ -5,16 +5,16 @@ import { SlotSchema } from '../../../../Validations/Slots/Slotvalidation'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import { expertAddSlots } from '../../../../Axios/Services/ExpertService'
+import SlotInfoModal from './SlotInfoModal';
 
 function AddSlots({ Students, expert_id, Slots, setRefresh, Refresh }) {
+    const [ShowInfoModal,setShowInfoModal] = useState(false)
+    const [FindItem,setFindItem] = useState('')
     const filter = Students.filter((item) => item.status === true)
     const count = filter?.length
     const token = useSelector((state) => state.ExpertReducer.accessToken)
 
     const onSubmit = async () => {
-
-
-
         // Split the start time and end time into hours and minutes
         const [startHour, startMinute] = values.startTime.split(':');
         const [endHour, endMinute] = values.endTime.split(':');
@@ -108,11 +108,17 @@ function AddSlots({ Students, expert_id, Slots, setRefresh, Refresh }) {
         EndDate.setHours(hours);
         EndDate.setMinutes(minutes);
         EndDate.setSeconds(seconds);
-        return isAfter( EndDate,new Date())
+        return isAfter(EndDate, new Date())
+    }
+
+    const slotFilter = (id)=>{
+        const filter = Slots?.find((item)=>item.id = id)
+        setFindItem(filter)
     }
 
     return (
         <>
+        {ShowInfoModal ? <SlotInfoModal FindItem={FindItem} setShowInfoModal={setShowInfoModal} /> : ''}
             <div className="mt-1 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
                 <div className="w-full flex  flex-col 2xl:w-1/3 bg-black">
                     <div className="flex justify-center bg-black  shadow-xl p-8">
@@ -223,25 +229,24 @@ function AddSlots({ Students, expert_id, Slots, setRefresh, Refresh }) {
                     </div>
 
                     {Slots.length === 0 ? <p className='text-center text-white mb-3 font-extrabold text-xl'>No slots for today</p> : <p className='text-center text-white mb-3 font-extrabold text-xl'>Available slots</p>}
-
                     <div className=' mb-6 flex justify-center flex-wrap '>
                         {Slots?.length === 0 ? <div><p className='text-center text-white mb-3 font-extrabold text-xl'>Add slots</p></div> :
                             Slots?.map((item) => {
                                 return (
                                     <div>
-                                        <div className={item.booked ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")}><p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p> </div>
-
-                                        {item.booked ? <p className='text-white text-center text-sm'>Booked</p> : ( expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
+                                        <div className={item.booked ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")}  
+                                        onClick={() => {
+                                            if (item.booked === true) {
+                                                setShowInfoModal(!ShowInfoModal)
+                                                slotFilter(item.id)
+                                            }
+                                          }}
+                                        ><p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p></div>
+                                        {item.booked ? <p className='text-white text-center text-sm'>Booked</p> : (expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
                                     </div>
                                 )
                             })
-
-
                         }
-
-
-
-
                     </div>
                 </div>
             </div>

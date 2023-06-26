@@ -107,7 +107,7 @@ export const getExpertsToPerticularDomain = async(token,domain_name)=>{
 
 // get single experts details 
 
-export const getSingleExpertDetails = async(token,id)=>{
+export const getSingleExpertDetails = async(token,id,user_id)=>{
     try{
         const config = {
             headers:{
@@ -117,6 +117,7 @@ export const getSingleExpertDetails = async(token,id)=>{
             },
             params: {
                 id: id,
+                user_id:user_id
             },
         }
         const response = await axiosClientInstance('client/single-experts/',config)
@@ -170,6 +171,8 @@ export const getClientProfile = async (token,id)=>{
         console.log(error.message)
     }
 }
+
+// client profile
 export const editClientProfile = async (token,data)=>{
    
     try{
@@ -182,6 +185,26 @@ export const editClientProfile = async (token,data)=>{
             
         }
     const response = await axiosClientInstance.patch('client/profile/',data,config)
+        return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
+// Token booking
+export const TokenBooking = async (token,data)=>{
+   
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json",
+                Authorization: `Bearer ${token}`,
+    
+            },
+            
+        }
+    const response = await axiosClientInstance.patch('client/slot-booking/',data,config)
         return response.data
 
     }
