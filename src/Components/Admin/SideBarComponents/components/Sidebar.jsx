@@ -40,14 +40,14 @@ const Sidebar = () => {
             src: <MdAdminPanelSettings />,
         },
        
-        { title: "Subscriptions", path: "/admin/subscriptions", src: <BsBorderWidth /> },
+        { title: "Subscriptions", path: "/admin/subscriptions", src: <MdAdminPanelSettings /> },
        
-        { title: "Add City", path: "", src: <FaCity /> },
-        { title: "Banner", path: "", src: <MdPhotoLibrary /> },
+      
     ];
     const handleLogout = () => {
         navigate("/login");
         dispatch(AdminLogout())
+        localStorage.setItem('page',1)
 
      
     };
@@ -57,7 +57,7 @@ const Sidebar = () => {
             <div
                 className={`${
                     open ? "w-60" : "w-fit"
-                } hidden sm:block relative min-h-max duration-300 bg-gray-800 border-r border-gray-200 dark:border-gray-600 p-5 dark:bg-slate-800`}
+                } hidden sm:block relative min-h-max duration-300 bg-black  border-r border-gray-200 dark:border-gray-600 p-5 dark:bg-slate-800`}
             >
                 <BsArrowLeftCircle
                     className={`${
@@ -75,12 +75,14 @@ const Sidebar = () => {
                 <ul className="pt-6">
                     {Menus.map((menu, index) => (
                         <Link to={menu.path} key={index}>
-                            <li
+                            <li onClick={()=>{
+                                localStorage.setItem('page',1)
+                            }}
                                 className={`flex items-center gap-x-6 p-3 text-base font-normal rounded-lg cursor-pointer dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700
                         ${menu.gap ? "mt-9" : "mt-2"} ${location.pathname === menu.path && "bg-gray-200 dark:bg-gray-700"}`}
                             >
                                 <span className="text-2xl text-sky-400">{menu.src}</span>
-                                <span className={`${!open && "hidden"} origin-left duration-300 hover:block text-red-600`}>
+                                <span className={`${!open && "hidden"} origin-left duration-300 hover:block text-yellow-600`}>
                                     {menu.title}
                                 </span>
                             </li>
@@ -93,7 +95,7 @@ const Sidebar = () => {
                         <span className="text-2xl text-white">
                             <MdLogout />
                         </span>
-                        <span className={`${!open && "hidden"} text-white origin-left duration-300 hover:block`}>Logout</span>
+                        <span className={`${!open && "hidden"} text-red-600 origin-left duration-300 hover:block`}>Logout</span>
                     </li>
                 </ul>
             </div>

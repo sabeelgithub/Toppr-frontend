@@ -1,5 +1,5 @@
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
 import { toast } from 'react-toastify';
@@ -8,11 +8,12 @@ import { useSelector } from "react-redux";
 import jwt from 'jwt-decode'
 import { FaVideo } from 'react-icons/fa'
 import { getBookedSlotDetails } from "../../../../Axios/Services/ExpertService";
+import { useSocket } from "../../../../Context/SocketProvider";
 
 
 
 
-function SlotInfoModal({FindItem,setShowInfoModal}) {
+function SlotInfoModal({FindItem,setShowInfoModal,expert_id}) {
     const cancelButtonRef = useRef(null);
     const [open, setOpen] = useState(true)
 
@@ -30,6 +31,30 @@ function SlotInfoModal({FindItem,setShowInfoModal}) {
         fetchingBookedSlotsdetails()
 
     },[])
+
+
+    const socket = useSocket()
+    const Email = "expert@gmail.com"
+  
+    const handleSubmitForm = useCallback(()=>{
+      // e.preventDefault()
+      socket.emit("room:join",{Email,expert_id})
+      
+    },[Email,expert_id,socket])
+  
+    const navigate = useNavigate()
+  
+    const handleJoinRoom = useCallback((data)=>{
+      const {Email,expert_id} = data
+      navigate(`/room/${expert_id}`)
+    },[navigate])
+  
+    useEffect(()=>{
+      socket.on("room:join",handleJoinRoom)
+      return ()=>{
+          socket.off("room:join",handleJoinRoom)
+      }
+    },[socket])
 
     
     
@@ -84,7 +109,10 @@ function SlotInfoModal({FindItem,setShowInfoModal}) {
                                                 <div className="bg-yellow-400 h-9 w-36 m-5 mb-3 rounded-lg flex justify-center font-semibold mx-auto pt-2"><p >{FindItem.start_time.slice(0, 5)} - {FindItem.end_time.slice(0, 5)}</p> </div>
                                                 <div className="bg-green-500 p-3  m-auto w-28 rounded-lg mt-4">
                                               
-                                                <FaVideo className="mx-auto w-8 h-8"/>
+                                            <FaVideo onClick={()=>{
+                                                handleSubmitForm()
+                                            }}  className="mx-auto w-8 h-8"/>
+
 
                                                 </div>
                                                 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-function Dashboard({Expert,Client}) {
+function  Dashboard({Expert,Client}) {
   return (
     <>
     <div className="mt-1 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
@@ -50,7 +50,8 @@ function Dashboard({Expert,Client}) {
                 {(Client || Expert) && (
                   <li className="flex border-b py-2 border-gray-600">
                     {Client && <><span className="font-bold w-24 text-white">Wallet:</span>
-                      <span className=" text-white">₹ {Client?.wallet} Rupees</span></>}
+                    
+                      <span className=" text-white">₹ {Client?.wallet ??0} Rupees</span> </>}
                     {Expert && <><span className="font-bold w-24 text-white">Wallet:</span>
                       <span className="text-white">₹ {Expert?.wallet} Rupees</span></>}
                   </li>

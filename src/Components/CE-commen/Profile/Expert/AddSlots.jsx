@@ -8,6 +8,7 @@ import { expertAddSlots } from '../../../../Axios/Services/ExpertService'
 import SlotInfoModal from './SlotInfoModal';
 
 function AddSlots({ Students, expert_id, Slots, setRefresh, Refresh }) {
+    console.log(expert_id)
     const [ShowInfoModal,setShowInfoModal] = useState(false)
     const [FindItem,setFindItem] = useState('')
     const filter = Students.filter((item) => item.status === true)
@@ -112,13 +113,14 @@ function AddSlots({ Students, expert_id, Slots, setRefresh, Refresh }) {
     }
 
     const slotFilter = (id)=>{
-        const filter = Slots?.find((item)=>item.id = id)
+        const filter = Slots?.find((item)=>item.id === id)
+        console.log(filter)
         setFindItem(filter)
     }
 
     return (
         <>
-        {ShowInfoModal ? <SlotInfoModal FindItem={FindItem} setShowInfoModal={setShowInfoModal} /> : ''}
+        {ShowInfoModal ? <SlotInfoModal FindItem={FindItem} setShowInfoModal={setShowInfoModal} expert_id={expert_id} /> : ''}
             <div className="mt-1 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
                 <div className="w-full flex  flex-col 2xl:w-1/3 bg-black">
                     <div className="flex justify-center bg-black  shadow-xl p-8">
@@ -234,15 +236,15 @@ function AddSlots({ Students, expert_id, Slots, setRefresh, Refresh }) {
                             Slots?.map((item) => {
                                 return (
                                     <div>
-                                        <div className={item.booked ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")}  
+                                        <div className={(item.booked && (expireHandle(item.end_time))) ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (item.booked && (!expireHandle(item.end_time))) ?  "bg-green-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3": (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")}  
                                         onClick={() => {
-                                            if (item.booked === true) {
+                                            if (expireHandle(item.end_time) && item.booked === true) {
                                                 setShowInfoModal(!ShowInfoModal)
                                                 slotFilter(item.id)
                                             }
                                           }}
                                         ><p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p></div>
-                                        {item.booked ? <p className='text-white text-center text-sm'>Booked</p> : (expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
+                                        {(item.booked && (expireHandle(item.end_time))) ? <p className='text-white text-center text-sm'>Booked</p> : (item.booked && (!expireHandle(item.end_time))) ? <p className='text-white text-center text-sm'>completed</p> : (expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
                                     </div>
                                 )
                             })

@@ -62,7 +62,7 @@ export default function Dark() {
          
         </div>
       </div>
-      <div className="w-full bg-black p-5  flex flex-nowrap overflow-x-scroll   pb-20 no-scrollbar">
+      <div className="w-full bg-black p-5  flex flex-nowrap justify-around overflow-x-scroll   pb-20 no-scrollbar">
 
         
         {Domain?.length !== 0 ? Domain?.map((item) => {

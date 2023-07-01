@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import dummyprofile from '../../Assets/profile4.jpg'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { getSingleExpertDetails } from '../../Axios/Services/ClientServices'
 import SubscriptionModal from './SubscriptionModal'
@@ -8,6 +8,7 @@ import { FaVideo } from 'react-icons/fa'
 import { isAfter } from 'date-fns';
 import BookToken from './BookToken'
 import jwt from 'jwt-decode'
+import { useSocket } from '../../Context/SocketProvider'
 
 function SingleExpert() {
   const [Expert, setExpert] = useState('')
@@ -21,25 +22,37 @@ function SingleExpert() {
   const [Refresh, setRefresh] = useState(false)
 
   const [Client_Already_Booked_Slot, setClient_Already_Booked_Slot] = useState([])
-
   const currentTime = new Date();
-
   const currentHourAndMinute = `${currentTime.getHours()}:${currentTime.getMinutes() < 10 ? '0' : ''}${currentTime.getMinutes()}`
-
-
-
-
-
   const { id } = useParams()
+  const expert_id = id
   const token = useSelector(state => state.ClientReducer.accessToken)
   const alreadySubscribed = useSelector(state => state.ClientReducer.subscription)
   const user = jwt(token)
 
 
+  const socket = useSocket()
+  const Email = "client@gmail.com"
 
+  const handleSubmitForm = useCallback(() => {
+    // e.preventDefault()
+    socket.emit("room:join", { Email, expert_id })
 
+  }, [Email, expert_id, socket])
 
+  const navigate = useNavigate()
 
+  const handleJoinRoom = useCallback((data) => {
+    const { Email, expert_id } = data
+    navigate(`/room/${expert_id}`)
+  }, [navigate])
+
+  useEffect(() => {
+    socket.on("room:join", handleJoinRoom)
+    return () => {
+      socket.off("room:join", handleJoinRoom)
+    }
+  }, [socket])
 
   useEffect(() => {
 
@@ -139,18 +152,18 @@ function SingleExpert() {
 
                 <p className='text-center text-xl text-white mt-3'>For your carrier support make  connection </p>
                 <div className='flex justify-center sm:mt-2 md:mt-4'>
-                  {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert?.id) ? <div> 
-                  
-                    {Client_Already_Booked_Slot.length && (Client_Already_Booked_Slot[0].start_time.slice(0,5) <= currentHourAndMinute && Client_Already_Booked_Slot[0].end_time.slice(0,5) >= currentHourAndMinute )? 
-                  <button  className="bg-green-500 w-28 hover:bg-green-700 text-white font-bold h-14 py-2 px-3 rounded-lg ml-8">
-                   <FaVideo className="mx-auto w-8 h-8"/>
-                   
-                  </button> :
-                  <button  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded-lg ml-8">
-                    Book slot
-                  </button> }
-                 
+                  {alreadySubscribed?.length !== 0 && alreadySubscribed?.find((item) => item.expert_id == Expert?.id) ? <div className='text-stone-900'>
 
+                    {Client_Already_Booked_Slot.length && (Client_Already_Booked_Slot[0].start_time.slice(0, 5) <= currentHourAndMinute && Client_Already_Booked_Slot[0].end_time.slice(0, 5) >= currentHourAndMinute) ?
+                      <button onClick={() => {
+                        handleSubmitForm()
+                      }} className="bg-green-500 w-28 hover:bg-green-700 text-white font-bold h-14 py-2 px-3 rounded-lg ml-8">
+                        <FaVideo className="mx-auto w-8 h-8" />
+
+                      </button> :
+                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-5 rounded-lg ml-8">
+                        Book slot
+                      </button>}
 
                     {Client_Already_Booked_Slot.length && Client_Already_Booked_Slot.map((item) => {
                       return (
@@ -187,14 +200,14 @@ function SingleExpert() {
           {Slots?.length !== 0 && Slots?.map((item) => {
             return (
               <div>
-                <div className={item.booked ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")} 
+                <div className={(item.booked && (expireHandle(item.end_time))) ? "bg-gray-500 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold  pt-2 pb-3" : (item.booked && (!expireHandle(item.end_time))) ? "bg-green-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : (expireHandle(item.end_time) ? "bg-white h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3" : "bg-red-400 h-9 w-36 m-5 mb-1 rounded-lg flex justify-center font-semibold pt-2 pb-3")}
                   onClick={() => {
-                  if (expireHandle(item.end_time) && item.booked === false && !Client_Already_Booked_Slot.length) {
-                    setShowBookToken(!ShowBookToken)
-                    slotFilter(item.id)
-                  }
-                }} ><p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p> </div>
-                {item.booked ? <p className='text-white text-center text-sm'>Booked</p> : (expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
+                    if (expireHandle(item.end_time) && item.booked === false && !Client_Already_Booked_Slot.length) {
+                      setShowBookToken(!ShowBookToken)
+                      slotFilter(item.id)
+                    }
+                  }} ><p >{item.start_time.slice(0, 5)} - {item.end_time.slice(0, 5)}</p> </div>
+                {(item.booked && (expireHandle(item.end_time))) ? <p className='text-white text-center text-sm'>Booked</p> : (item.booked && (!expireHandle(item.end_time))) ? <p className='text-white text-center text-sm'>completed</p> : (expireHandle(item.end_time) ? <p className='text-white text-center text-sm'>Active</p> : <p className='text-white text-center text-sm'>Expired</p>)}
               </div>
             )
           })}

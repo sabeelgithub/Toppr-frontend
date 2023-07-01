@@ -431,6 +431,24 @@ export const getSubscription = async (token) => {
     }
 }
 
+// dashboard
+export const getDashboardDetails = async (token) => {
+    try {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const response = await axiosAdminInstance.get('dashboard/',config)
+        return response.data
+
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
+
 
 
 
