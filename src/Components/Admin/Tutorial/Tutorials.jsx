@@ -21,7 +21,6 @@ function Tutorials() {
 
     const page = localStorage.getItem('page')
     const [CurrentPage, setCurrentPage] = useState(page ?? 1)
-    console.log(CurrentPage, 'check')
     const recordsPerPage = 4
     const lastIndex = CurrentPage * recordsPerPage
     const firstIndex = lastIndex - recordsPerPage

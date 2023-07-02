@@ -16,7 +16,8 @@ function ExpertList() {
     const [Id, setId] = useState('')
 
 
-    const [CurrentPage, setCurrentPage] = useState(1)
+    const page = localStorage.getItem('page')
+    const [CurrentPage, setCurrentPage] = useState(page ?? 1)
     const recordsPerPage = 4
     const lastIndex = CurrentPage * recordsPerPage
     const firstIndex = lastIndex - recordsPerPage
@@ -70,8 +71,11 @@ function ExpertList() {
         try {
             const fetchExperts = async () => {
                 const response = await getExpertsList(token)
-                setData(response?.payload)
-                setAllData(response?.payload)
+                if(response){
+                    setData(response?.payload)
+                    setAllData(response?.payload)
+
+                }
 
             }
             fetchExperts()
@@ -166,7 +170,7 @@ function ExpertList() {
                                 <li key={i}>
                                     <a onClick={() => {
                                         changeCPage(n)
-                                    }} href="#" className={CurrentPage === n ? "px-3 py-2 leading-tight text-gray-500 bg-blue-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" : "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}>{n}</a>
+                                    }} href="#" className={CurrentPage == n ? "px-3 py-2 leading-tight text-gray-500 bg-blue-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" : "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}>{n}</a>
                                 </li>
 
                             )

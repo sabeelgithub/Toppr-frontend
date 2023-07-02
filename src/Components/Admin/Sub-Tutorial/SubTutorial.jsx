@@ -15,12 +15,11 @@ function SubTutorial() {
     const [Refresh, setRefresh] = useState(false)
     const [FindItem, setFindItem] = useState('')
 
-
-    const [CurrentPage, setCurrentPage] = useState(1)
+    const page = localStorage.getItem('page')
+    const [CurrentPage, setCurrentPage] = useState(page ?? 1)
     const recordsPerPage = 4
     const lastIndex = CurrentPage * recordsPerPage
     const firstIndex = lastIndex - recordsPerPage
-
     const records = Data.slice(firstIndex, lastIndex)
     const nPage = Math.ceil(Data.length / recordsPerPage)
     const numbers = [...Array(nPage + 1).keys()].slice(1)
@@ -179,7 +178,7 @@ function SubTutorial() {
                                     <li key={i}>
                                         <a onClick={() => {
                                             changeCPage(n)
-                                        }} href="#" className={CurrentPage === n ? "px-3 py-2 leading-tight text-gray-500 bg-blue-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" : "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}>{n}</a>
+                                        }} href="#" className={CurrentPage == n ? "px-3 py-2 leading-tight text-gray-500 bg-blue-500 border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white" : "px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"}>{n}</a>
                                     </li>
 
                                 )

@@ -448,6 +448,40 @@ export const getDashboardDetails = async (token) => {
         console.log(error.message)
     }
 }
+// bargraph
+export const getbargraphDetails = async (token) => {
+    try {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const response = await axiosAdminInstance.get('bargraph/',config)
+        return response.data
+
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
+// roundedgraph
+export const getRoundedgraphDetails = async (token) => {
+    try {
+        const config = {
+            headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const response = await axiosAdminInstance.get('roundedgraph/',config)
+        return response.data
+
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
 
 
 
