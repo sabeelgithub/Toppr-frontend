@@ -50,9 +50,11 @@ export default function Header() {
     <header className="bg-black">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 " aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <a  className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <img className="h-12 w-auto" src={icon} alt="" />
+            <img onClick={()=>{
+              navigate('/')
+            }} className="h-12 w-auto" src={icon} alt="" />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -67,10 +69,16 @@ export default function Header() {
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
          
-        <Link to="/" className="text-sm font-semibold leading-6 text-white">Home</Link>
-        <Link to="/domains" className="text-sm font-semibold leading-6 text-white ">Domains</Link>
-        <Link to="/experts" className="text-sm font-semibold leading-6 text-white ">Experts</Link>
-        <Link to="" className="text-sm font-semibold leading-6 text-white ">About</Link>
+        <Link to="/" onClick={()=>{
+          localStorage.setItem('rating',0)
+        }} className="text-sm font-semibold leading-6 text-white">Home</Link>
+        <Link to="/domains" onClick={()=>{
+          localStorage.setItem('rating',0)
+        }} className="text-sm font-semibold leading-6 text-white ">Domains</Link>
+        <Link to="/experts" onClick={()=>{
+          localStorage.setItem('rating',0)
+        }} className="text-sm font-semibold leading-6 text-white ">Experts</Link>
+       
         
       
         
@@ -79,7 +87,9 @@ export default function Header() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
        
          {(client || expert) && (
-          <Link to="/profile" className='text-white mx-32 mt-2 uppercase'>
+          <Link to="/profile" onClick={()=>{
+            localStorage.setItem('rating',0)
+          }} className='text-white mx-32 mt-2 uppercase'>
             {client?.username || expert?.username}
           </Link>
         )}
@@ -95,6 +105,7 @@ export default function Header() {
               if (token_client) {
                 dispatch(ClientLogout());
                 localStorage.setItem('Component','dashboard')
+                localStorage.setItem('rating',0)
               } else if (expert_token) {
                 dispatch(ExpertLogout());
                 localStorage.setItem('Component','dashboard')
@@ -113,14 +124,14 @@ export default function Header() {
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-10" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <div className="fixed inset-0 z-10 text-white bg-white" />
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-100">
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <img
                 className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                src={icon}
                 alt=""
               />
             </a>
@@ -137,11 +148,24 @@ export default function Header() {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                
-                <Link to="" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Home</Link>
-                <Link to="" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Domains</Link>
-                <Link to="" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Experts</Link>
-                <Link to="" className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">About</Link>
-                <p className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'>hi</p>
+                <Link to="/" onClick={()=>{
+                  localStorage.setItem('rating',0)
+                }} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Home</Link>
+                <Link to="/domains" onClick={()=>{
+                  localStorage.setItem('rating',0)
+                }} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Domains</Link>
+                <Link to="/experts" onClick={()=>{
+                  localStorage.setItem('rating',0)
+                }} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Experts</Link>
+                {(client || expert) && (
+                  <Link to="/profile" onClick={()=>{
+                    localStorage.setItem('rating',0)
+                  }} className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 uppercase">
+                    {client?.username || expert?.username}
+                  </Link>
+                )}
+               
+                
                
               
               </div>

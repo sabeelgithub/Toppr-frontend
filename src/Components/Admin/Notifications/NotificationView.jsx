@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { getSinglePendingExpert, handleAddExpertAndRejectExpert } from '../../../Axios/Services/AdminServices'
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux'
+import { axiosInstance } from '../../../Axios/Instances/Instance'
 
 
 
@@ -105,7 +106,7 @@ export default function NotificationView() {
 
                     <div className='w-[45rem] '>
                         <img
-                            src={`http://127.0.0.1:8000/${Data?.certificate}`} alt="" className="h-[25rem]  w-[45rem] object-cover object-center" ></img>
+                            src={`${axiosInstance}${Data?.certificate}`} alt="" className="h-[25rem]  w-[45rem] object-cover object-center" ></img>
                     </div>
                     <button
                         type="button"

@@ -3,15 +3,21 @@ import { useSocket } from '../Context/SocketProvider'
 import ReactPlayer from 'react-player'
 import peer from '../Service/peer'
 import Footer from '../Components/Footer'
-
 import { IoIosCall } from "react-icons/io";
 import { useNavigate, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 
 function Room() {
+
+    const client_token = useSelector(state=>state.ClientReducer.accessToken)
+    const expert_token = useSelector(state=>state.ExpertReducer.accessToken)
     const socket = useSocket()
     const [RemoteSocketId,setRemoteSocketId] = useState(null)
     const [Mystream,setMystream] = useState()
     const [RemoteStream,setRemoteStream] = useState()
+
+    const { expert_id } = useParams()
 
     const handleUserJoined = useCallback(({Email,id})=>{
         console.log(`Email ${Email} joined room`)
@@ -122,7 +128,7 @@ function Room() {
         peer.peer.close() //close connection
         setMystream(null)
         setRemoteStream(null)
-        window.location.reload();
+        // window.location.reload();
         if(Mystream){
             Mystream.getTracks().forEach(track => {
             track.stop()
@@ -130,8 +136,15 @@ function Room() {
           });
         }
        
-       navigator.mediaDevices.getUserMedia({audio:true,video:false})
-       navigate(-1) 
+        navigator.mediaDevices.getUserMedia({audio:true,video:false})
+        if(client_token){
+        navigate(`/rating/${expert_id}`) 
+        return
+        } else if(expert_token){
+        navigate(-1) 
+        return
+       }
+
        }
 
   return (

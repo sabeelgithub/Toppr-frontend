@@ -8,7 +8,6 @@ import { expertAddSlots } from '../../../../Axios/Services/ExpertService'
 import SlotInfoModal from './SlotInfoModal';
 
 function AddSlots({ Students, expert_id, Slots, setRefresh, Refresh }) {
-    console.log(expert_id)
     const [ShowInfoModal,setShowInfoModal] = useState(false)
     const [FindItem,setFindItem] = useState('')
     const filter = Students.filter((item) => item.status === true)

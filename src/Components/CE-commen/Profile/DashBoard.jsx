@@ -53,7 +53,7 @@ function  Dashboard({Expert,Client}) {
                     
                       <span className=" text-white">₹ {Client?.wallet ??0} Rupees</span> </>}
                     {Expert && <><span className="font-bold w-24 text-white">Wallet:</span>
-                      <span className="text-white">₹ {Expert?.wallet} Rupees</span></>}
+                      <span className="text-white">₹ {Expert?.wallet ??0} Rupees</span></>}
                   </li>
                 )}
 

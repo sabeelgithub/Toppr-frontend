@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import jwt from 'jwt-decode'
 import { domain_purchase, getSubTutorials, getTutorials } from "../../../Axios/Services/ClientServices";
 import { DomainAdd } from "../../../Redux/ClientSlice";
-
+ let clientId=process.env.REACT_APP_paypal
 
 
 function DomainModal({ setShowDomainModal, FindItem, setShowDomainSuccessModal }) {
@@ -28,17 +28,6 @@ function DomainModal({ setShowDomainModal, FindItem, setShowDomainSuccessModal }
     const user = jwt(token)
 
     const dispatch = useDispatch()
-
-
-
-
-
-
-
-
-
-
-
 
     useEffect(() => {
         try {
@@ -143,13 +132,7 @@ function DomainModal({ setShowDomainModal, FindItem, setShowDomainSuccessModal }
                                                 <span class="sr-only">Close modal</span>
                                             </button>
                                             <div class=" p-6 text-center">
-                                                {/*  <div className="mt-5 border border-rose-800 rounded-lg"><p class="mb-3 text-gray-500 dark:text-gray-400">Track work across the enterprise through an open, collaborative platform. Link issues across Jira and ingest data from other software development tools, so your IT support and operations teams have richer contextual information to rapidly respond to requests, incidents, and changes.</p>
-                                            <p class="text-gray-500 dark:text-gray-400">Deliver great service experiences fast - without the complexity of traditional ITSM solutions.Accelerate critical development work, eliminate toil, and deploy changes with ease, with a complete audit trail for every change.</p>
-                                            </div>*/}
-
-
-
-
+                                             
                                                 <div className="px-4 sm:px-0">
                                                     <h3 className="text-base font-semibold leading-7 text-gray-900">{FindItem.domain_name} Information</h3>
 
@@ -200,7 +183,7 @@ function DomainModal({ setShowDomainModal, FindItem, setShowDomainSuccessModal }
                                                 </div>
 
                                                 {SubTutorial?.length !== 0 ? <div className=" mt-5  flex justify-center">
-                                                    <PayPalScriptProvider options={{ "client-id": "AT1Ktl9NZX0bdIVhIFfvOjqfKDW5TvuaFxVO5lVaTdnSar8jCMdbbW6ZEDCGdNznqKdAUO1LCQO5B3Az" }}>
+                                                    <PayPalScriptProvider options={{ "client-id":clientId  }}>
                                                         <PayPalButtons style={{ layout: "vertical" }} className="w-2/5"
                                                             createOrder={(data, actions) => {
                                                                 return actions.order.create({

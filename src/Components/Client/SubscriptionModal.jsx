@@ -9,7 +9,7 @@ import { Subscribe } from "../../Axios/Services/ClientServices";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { SubscribeAdd } from "../../Redux/ClientSlice";
 
-
+const clientId=process.env.REACT_APP_paypalClient
 
 const SubscriptionModal = ({ setShowSubscriptionModal, expertID, domainID, domain_name, expert_name }) => {
 
@@ -169,7 +169,7 @@ const SubscriptionModal = ({ setShowSubscriptionModal, expertID, domainID, domai
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                <PayPalScriptProvider options={{ "client-id": "AT1Ktl9NZX0bdIVhIFfvOjqfKDW5TvuaFxVO5lVaTdnSar8jCMdbbW6ZEDCGdNznqKdAUO1LCQO5B3Az" }}>
+                                                <PayPalScriptProvider options={{ "client-id": clientId }}>
                                                     <PayPalButtons style={{ layout: "vertical" }} className="mt-5"
                                                         createOrder={(data, actions) => {
                                                             return actions.order.create({

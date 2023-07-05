@@ -28,7 +28,6 @@ function BookToken({setShowBookToken,FindItem,setRefresh,Refresh}) {
 
         }
         const response = await TokenBooking(token,data)
-        console.log(response,'ethi')
         if (response){
             if (response?.status===200){
                 toast.success(response?.message)

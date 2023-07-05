@@ -212,6 +212,31 @@ export const TokenBooking = async (token,data)=>{
         console.log(error.message)
     }
 }
+// rating
+export const submitRating = async (token,count,id)=>{
+    
+   
+    try{
+        const config = {
+            headers:{
+                "Content-type":"application/json",
+                Authorization: `Bearer ${token}`,
+    
+            },
+            
+        }
+        const data = {
+          count:count,
+          expert:id
+        }
+    const response = await axiosClientInstance.post('client/submit-rating/',data,config)
+    return response.data
+
+    }
+    catch (error){
+        console.log(error.message)
+    }
+}
 
 
 

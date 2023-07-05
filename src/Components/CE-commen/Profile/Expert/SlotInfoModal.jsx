@@ -20,6 +20,9 @@ function SlotInfoModal({FindItem,setShowInfoModal,expert_id}) {
     const [Client,setClient] = useState('')
     const token = useSelector(state=>state.ExpertReducer.accessToken)
 
+    const currentTime = new Date();
+    const currentHourAndMinute = `${currentTime.getHours()}:${currentTime.getMinutes() < 10 ? '0' : ''}${currentTime.getMinutes()}`
+
     useEffect(()=>{
 
         const fetchingBookedSlotsdetails = async ()=>{
@@ -108,10 +111,11 @@ function SlotInfoModal({FindItem,setShowInfoModal,expert_id}) {
                                                 <p className="text-lg uppercase font-extrabold">This slot is booked by {Client?.client_name}</p>
                                                 <div className="bg-yellow-400 h-9 w-36 m-5 mb-3 rounded-lg flex justify-center font-semibold mx-auto pt-2"><p >{FindItem.start_time.slice(0, 5)} - {FindItem.end_time.slice(0, 5)}</p> </div>
                                                 <div className="bg-green-500 p-3  m-auto w-28 rounded-lg mt-4">
-                                              
-                                            <FaVideo onClick={()=>{
-                                                handleSubmitForm()
-                                            }}  className="mx-auto w-8 h-8"/>
+                                                {FindItem.start_time.slice(0, 5)<=currentHourAndMinute && FindItem.end_time.slice(0,5)>=currentHourAndMinute ?  <FaVideo onClick={()=>{
+                                                    handleSubmitForm()
+                                                }}  className="mx-auto w-8 h-8"/> : <p className="uppercase text-center font-semibold">wait for time</p> }
+                                                
+                                               
 
 
                                                 </div>

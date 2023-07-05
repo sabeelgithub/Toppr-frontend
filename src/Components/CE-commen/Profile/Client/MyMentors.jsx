@@ -1,6 +1,7 @@
 import React from 'react'
 import poto from '../../../../Assets/profile4.jpg'
 import { useNavigate } from 'react-router-dom'
+import { axiosInstance } from '../../../../Axios/Instances/Instance'
 
 function MyMentors({ MyTeachers }) {
     const navigate = useNavigate()
@@ -164,7 +165,7 @@ function MyMentors({ MyTeachers }) {
                                                                     ">
                                                                     <img onClick={()=>{
                                                                         navigate(`/single-expert/${item.expert_id}`)
-                                                                    }} src={`http://127.0.0.1:8000/${item?.expert_poto}`} className="w-36 border-4 h-36 object-cover rounded-full" alt="Expert Profile" />
+                                                                    }} src={`${axiosInstance}${item?.expert_poto}`} className="w-36 border-4 h-36 object-cover rounded-full" alt="Expert Profile" />
                                                                     </td>
                                                                      <td onClick={()=>{
                                                                         navigate(`/single-expert/${item.expert_id}`)

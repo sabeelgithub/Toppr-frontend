@@ -52,7 +52,7 @@ function Notification() {
     function searchPendingExpertd(e) {
         const key = e.target.value;
         const regex = new RegExp(`^${key}`, 'i')
-        const filteredDomain = allData?.filter((item) => regex.test(item?.domain))
+        const filteredDomain = allData?.filter((item) => regex.test(item?.username))
         if (!key) {
             setData(allData)
         } else {

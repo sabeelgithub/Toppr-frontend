@@ -19,6 +19,7 @@ import ExpertEditModal from './Expert/ExpertEditModal'
 import MentorHistory from './Client/MentorHistory'
 import StudentHistory from './Expert/StudentHistory'
 import AddSlots from './Expert/AddSlots'
+import { axiosInstance } from '../../../Axios/Instances/Instance'
 
 
 
@@ -112,10 +113,10 @@ function Commen() {
           <div className="flex flex-col items-center -mt-20">
 
             {Expert && (
-              <img src={`http://127.0.0.1:8000/${Expert.profile_poto}`} className="w-40 h-40 object-cover border-4 border-white rounded-full" alt="Expert Profile" />
+              <img src={`${axiosInstance}${Expert.profile_poto}`} className="w-40 h-40 object-cover border-4 border-white rounded-full" alt="Expert Profile" />
             )}
             {Client && (
-              <img src={Client?.profile_poto ? `http://127.0.0.1:8000/${Client.profile_poto}` : 'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png'} className="w-40 border-4 h-40 object-cover border-white rounded-full" alt="Client Profile" />
+              <img src={Client?.profile_poto ? `${axiosInstance}${Client.profile_poto}` : 'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png'} className="w-40 border-4 h-40 object-cover border-white rounded-full" alt="Client Profile" />
             )}
 
             <div className="flex items-center space-x-2 mt-2">

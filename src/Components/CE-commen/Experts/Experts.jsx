@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { getExperts } from '../../../Axios/Services/CommenServices'
 import dummyprofile from '../../../../src/Assets/profile4.jpg'
+import { axiosInstance } from '../../../Axios/Instances/Instance';
 
 export default function Experts() {
   const [Expert,setExpert] = useState([])
@@ -27,7 +28,7 @@ export default function Experts() {
       return (
         <div className='m-4' >
         <div className='w-60 h-60 '>
-          <img className='w-60 h-60 object-cover rounded-2xl'  src={`http://127.0.0.1:8000/${item.profile_poto}`}  alt="profile_poto" />
+          <img className='w-60 h-60 object-cover rounded-2xl'  src={`${axiosInstance}${item.profile_poto}`}   alt="profile_poto" />
         </div>
         <div className='w-60'>
           <h5 className="mt-2 text-center mb-1 text-xl font-medium uppercase text-white dark:text-white">{item.username}</h5>

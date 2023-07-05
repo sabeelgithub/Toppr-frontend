@@ -5,8 +5,9 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import DomainModal from './DomainModal';
 import DomainSuccessModal from './DomainSuccessModal';
-
+import { axiosInstance } from '../../../Axios/Instances/Instance';
 export default function Domain() {
+  console.log(axiosInstance,'instnce')
     const [Domain,setDomain] = useState([])
     const [ShowDomainModal,setShowDomainModal] = useState(false)
     const [FindItem,setFindItem] = useState('')
@@ -51,7 +52,7 @@ export default function Domain() {
         return (
           <div className="min-w-[380px] bg-white border m-8 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
   <a href="#">
-    <img className=" rounded-t-lg w-[380px] h-[380px] " src={`http://127.0.0.1:8000/${item.image}`} alt="product image" />
+    <img className=" rounded-t-lg w-[380px] h-[380px] " src={`${axiosInstance}${item.image}`} alt="product image" />
   </a>
   <div className="px-5 pb-5">
     <a href="#">
@@ -87,7 +88,7 @@ export default function Domain() {
         return (
           <div className="min-w-[380px] bg-white border m-8 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
   <a href="#">
-    <img className=" rounded-t-lg w-[380px] h-[380px] " src={`http://127.0.0.1:8000/${item.image}`} alt="product image" />
+    <img className=" rounded-t-lg w-[380px] h-[380px] " src={`${axiosInstance}${item.image}`} alt="product image" />
   </a>
   <div className="px-5 pb-5">
     <a href="#">

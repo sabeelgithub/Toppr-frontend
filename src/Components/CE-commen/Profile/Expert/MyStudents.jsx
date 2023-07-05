@@ -1,4 +1,5 @@
 import React from 'react'
+import { axiosInstance } from '../../../../Axios/Instances/Instance'
 
 function MyStudents({ Students }) {
     const filter = Students.filter((item) => item.status === true)
@@ -129,7 +130,7 @@ function MyStudents({ Students }) {
                                                                     border-b border-[#E8E8E8]
                                                                     ">
 
-                                                                        <img src={item?.client_poto ? `http://127.0.0.1:8000/${item?.client_poto}` : 'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png'} className="w-36 border-4 h-36 object-cover rounded-full" alt="Client Profile" />
+                                                                        <img src={item?.client_poto ? `${axiosInstance}${item?.client_poto}` : 'https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png'} className="w-36 border-4 h-36 object-cover rounded-full" alt="Client Profile" />
                                                                     </td>
                                                                     <td className="
                                                                     text-center text-dark

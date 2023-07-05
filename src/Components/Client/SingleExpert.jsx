@@ -9,19 +9,19 @@ import { isAfter } from 'date-fns';
 import BookToken from './BookToken'
 import jwt from 'jwt-decode'
 import { useSocket } from '../../Context/SocketProvider'
+import { axiosInstance } from '../../Axios/Instances/Instance'
+
 
 function SingleExpert() {
   const [Expert, setExpert] = useState('')
   const [Rating, setRating] = useState('')
   const [ShowSubscriptionModal, setShowSubscriptionModal] = useState(false)
   const [Slots, setSlots] = useState([])
-
-
   const [ShowBookToken, setShowBookToken] = useState(false) // for booking token
   const [FindItem, setFindItem] = useState('')
   const [Refresh, setRefresh] = useState(false)
-
   const [Client_Already_Booked_Slot, setClient_Already_Booked_Slot] = useState([])
+
   const currentTime = new Date();
   const currentHourAndMinute = `${currentTime.getHours()}:${currentTime.getMinutes() < 10 ? '0' : ''}${currentTime.getMinutes()}`
   const { id } = useParams()
@@ -35,6 +35,7 @@ function SingleExpert() {
   const Email = "client@gmail.com"
 
   const handleSubmitForm = useCallback(() => {
+
     // e.preventDefault()
     socket.emit("room:join", { Email, expert_id })
 
@@ -48,6 +49,7 @@ function SingleExpert() {
   }, [navigate])
 
   useEffect(() => {
+
     socket.on("room:join", handleJoinRoom)
     return () => {
       socket.off("room:join", handleJoinRoom)
@@ -55,7 +57,6 @@ function SingleExpert() {
   }, [socket])
 
   useEffect(() => {
-
     const fetchSigleExpert = async () => {
       const response = await getSingleExpertDetails(token, id, user.user_id)
       if (response) {
@@ -132,14 +133,13 @@ function SingleExpert() {
   return (
     <>
       {ShowSubscriptionModal ? <SubscriptionModal expertID={id} domainID={Expert?.domain_id} domain_name={Expert.domain} expert_name={Expert?.username} setShowSubscriptionModal={setShowSubscriptionModal} /> : ''}
-
       {ShowBookToken ? <BookToken setShowBookToken={setShowBookToken} FindItem={FindItem} setRefresh={setRefresh} Refresh={Refresh} /> : ''}
       <div className='h-full pt-16 pb-16 bg-black '>
         <div className='flex justify-center'>
           <div className='grid md:grid-cols-2  sm:grid-cols-1  w-3/4 bg-slate-500  h-full'>
 
             <div className=' h-96'>
-              <img className='object-cover w-full h-full ' src={`http://127.0.0.1:8000/${Expert?.profile_poto}`} alt="profile_poto" />
+              <img className='object-cover w-full h-full ' src={`${axiosInstance}${Expert?.profile_poto}`} alt="profile_poto" />
             </div>
             <div className='bg-stone-900 shadow-xl  h-96 items-center pt-7 pb-7'>
               <div className='p-5'>
