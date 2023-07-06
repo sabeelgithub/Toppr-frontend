@@ -111,7 +111,7 @@ function LoginForm() {
                     Don’t have an account yet? <Link to='/register' href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
                   </p>
 
-                  <a href="#" className="text-sm font-medium text-white hover:underline dark:text-primary-500">Forgot password?</a>
+                 
                 </div>
               </form>
             </div>
