@@ -198,7 +198,7 @@ const Dashboard = () => {
         <div className="grid gap-2 grid-cols-1 lg:grid-cols-2">
 
           <div className="bg-white shadow-lg mr-3 ml-3 rounded-lg" id="chartline"><BarChart months={months} earnings={earnings} profits={profits} /></div>
-          <div class="bg-white shadow-lg flex ml-3 pl-20 mr-3 rounded-lg" id="chartpie" style={{ height: '300px' }}><Doughnut count={count} /></div>
+          <div class="bg-white shadow-lg flex ml-3 pl-20 mr-3 rounded-lg" id="chartpie" style={{ height: '300px' }}><Doughnut count={count} style={{  width: '300px', height: '300px' }}  /></div>
 
         </div>
       </div>
