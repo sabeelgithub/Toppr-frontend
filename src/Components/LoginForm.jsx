@@ -108,7 +108,7 @@ function LoginForm() {
 
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-light text-white dark:text-gray-400">
-                    Don’t have an account yet? <Link to='/register' href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
+                    Don’t have an account ? <Link to='/register' href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</Link>
                   </p>
 
                  
