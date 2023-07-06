@@ -6,7 +6,7 @@ function MyStudents({ Students }) {
     return (
         <>
             <div className="mt-1 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
-                <div className="w-full flex flex-col 2xl:w-1/3">
+                <div className="w-full flex flex-col ">
                     <div className="flex-1 bg-black  shadow-xl p-8">
                         {filter?.length !== 0 && <p className='text-center text-white font-extrabold text-2xl mb-3'>My Students</p>}
                         <section className="bg-black">

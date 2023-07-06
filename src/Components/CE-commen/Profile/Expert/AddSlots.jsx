@@ -121,7 +121,7 @@ function AddSlots({ Students, expert_id, Slots, setRefresh, Refresh }) {
         <>
         {ShowInfoModal ? <SlotInfoModal FindItem={FindItem} setShowInfoModal={setShowInfoModal} expert_id={expert_id} /> : ''}
             <div className="mt-1 flex flex-col 2xl:flex-row space-y-4 2xl:space-y-0 2xl:space-x-4">
-                <div className="w-full flex  flex-col 2xl:w-1/3 bg-black">
+                <div className="w-full flex  flex-col  bg-black">
                     <div className="flex justify-center bg-black  shadow-xl p-8">
                         {Slots?.length === 0 && <form className='bg-emerald-400 rounded-2xl w-full md:w-1/3 pb-4' onSubmit={handleSubmit}>
 
