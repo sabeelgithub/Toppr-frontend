@@ -170,12 +170,27 @@ export default function Header() {
               
               </div>
               <div className="py-6">
-                <Link
-                  to="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </Link>
+              {
+                (token_client || expert_token) ? (
+                  <button onClick={() => {
+                    if (token_client) {
+                      dispatch(ClientLogout());
+                      localStorage.setItem('Component','dashboard')
+                      localStorage.setItem('rating',0)
+                    } else if (expert_token) {
+                      dispatch(ExpertLogout());
+                      localStorage.setItem('Component','dashboard')
+                    }
+                    navigate('/');
+                  }} className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
+                    Log out
+                  </button>
+                ) : (
+                  <Link to="/login" className="text-sm font-semibold leading-6 text-white py-2 px-3 rounded-md bg-yellow-400 hover:bg-yellow-500">
+                    Log In
+                  </Link>
+                )
+              }
               </div>
             </div>
           </div>
