@@ -10,7 +10,7 @@ export const useSocket = ()=>{
 }
 export const SocketProvider = ({children}) =>{
 
-    const socket = useMemo(()=>io('localhost:9000'),[])
+    const socket = useMemo(()=>io('https://topprsocket.onrender.com'),[])
 
     return (
         <SocketContext.Provider value={socket}>
