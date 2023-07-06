@@ -31,6 +31,7 @@ export default function Dark() {
     try {
       const fetchDomains = async() => {
         const response = await getDomains()
+        console.log(response,'checkinh')
 
         if(response){
           setDomain(response?.payload)
