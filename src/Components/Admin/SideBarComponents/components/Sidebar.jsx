@@ -18,6 +18,7 @@ const Sidebar = () => {
     const [open, setOpen] = useState(true);
     const [mobileMenu, setMobileMenu] = useState(false);
     const location = useLocation();
+   
 
     const Menus = [
         { title: "Dashboard", path: "/admin/dashboard", src: <MdAnalytics /> },
@@ -42,6 +43,9 @@ const Sidebar = () => {
 
         { title: "Subscriptions", path: "/admin/subscriptions", src: <MdAdminPanelSettings /> },
 
+    
+       
+
 
     ];
     const handleLogout = () => {
@@ -51,6 +55,7 @@ const Sidebar = () => {
 
 
     };
+  
 
     return (
         <>
