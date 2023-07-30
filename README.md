@@ -1,4 +1,4 @@
-#Toppr
+##Toppr
 
 Toppr is a E-learning platform in which,there is three side for it,a client side(student) ,expert(teacher) side and admin side.
 client can register&login and purchase domain listed in the website using paypal and they can read and study materials in that perticular domain.if they face any doubts,we have solution for that ,there will be industrial experts in each perticular domains.client(student) can clarify their doubts with industrial experts through video call.the video call is only available after successfull subscription either 3,6 and 9 months.client subscribe any experts based on their rating given by other clients.
